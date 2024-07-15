@@ -10,3 +10,4 @@ interface DriverModel extends CreateDriverModel {
   createdAt: string;
   updatedAt: string;
 }
+
