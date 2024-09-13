@@ -6,14 +6,19 @@ const AuthRoutes = {
   },
   children: [
     {
-      name: 'Login',
-      path: '/auth/login',
-      component: () => import('@/views/authentication/auth/LoginPage.vue')
+      name: 'LandingPage',
+      path: '/',
+      component: () => import('@/security-management/views/LoginPage.vue')
     },
     {
-      name: 'Register',
-      path: '/auth/register',
-      component: () => import('@/views/authentication/auth/RegisterPage.vue')
+      name: 'Login',
+      path: '/auth/login',
+      component: () => import('@/security-management/views/LoginPage.vue')
+    },
+    {
+      name: 'ForgotPassword',
+      path: '/auth/forgot-password',
+      component: () => import('@/security-management/views/ForgotPasswordPage.vue')
     },
     {
       name: 'Error 404',

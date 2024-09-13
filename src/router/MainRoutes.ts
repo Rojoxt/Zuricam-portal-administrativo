@@ -1,30 +1,41 @@
 const MainRoutes = {
   path: '/main',
   meta: {
-    requiresAuth: true
+    requiresAuth: false
   },
   redirect: '/main/dashboard/default',
   component: () => import('@/layouts/full/FullLayout.vue'),
   children: [
     {
-      name: 'UserManagement',
-      path: '/user-management',
+      name: 'DriverManagement',
+      path: '/driver-management',
       component: () => import('@/unit-management/views/DriverManagementView.vue')
     },
     {
-      name: 'LandingPage',
-      path: '/',
-      component: () => import('@/views/dashboards/default/DefaultDashboard.vue')
+      name: 'CameraManagement',
+      path: '/camera-management',
+      component: () => import('@/camera-management/views/CameraManagementView.vue')
     },
+    {
+      name: 'UnitManagement',
+      path: '/unit-management',
+      component: () => import('@/unit-management/views/UnitManagementView.vue')
+    },
+    {
+      name: 'UserManagement',
+      path: '/user-management',
+      component: () => import('@/user-management/views/UserManagementView.vue')
+    },
+    {
+      name: 'ReportManagement',
+      path: '/report-management',
+      component: () => import('@/report-management/views/ReportManagementView.vue')
+    },
+
     {
       name: 'Default',
       path: '/dashboard/default',
       component: () => import('@/views/dashboards/default/DefaultDashboard.vue')
-    },
-    {
-      name: 'Starter',
-      path: '/starter',
-      component: () => import('@/views/StarterPage.vue')
     },
     {
       name: 'Tabler Icons',
@@ -35,16 +46,6 @@ const MainRoutes = {
       name: 'Material Icons',
       path: '/icons/material',
       component: () => import('@/views/utilities/icons/MaterialIcons.vue')
-    },
-    {
-      name: 'Typography',
-      path: '/utils/typography',
-      component: () => import('@/views/utilities/typography/TypographyPage.vue')
-    },
-    {
-      name: 'Shadows',
-      path: '/utils/shadows',
-      component: () => import('@/views/utilities/shadows/ShadowPage.vue')
     },
     {
       name: 'Colors',

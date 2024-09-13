@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Logo from '@/layouts/full/logo/LogoDark.vue';
-import AuthLogin from '../authForms/AuthLogin.vue';
+import AuthRegister from '../components/AuthForgotPassword.vue';
 </script>
 
 <template>
@@ -18,14 +18,14 @@ import AuthLogin from '../authForms/AuthLogin.vue';
                     <v-row>
                       <v-col cols="12" class="text-center">
                         <Logo />
-                        <h2 class="text-secondary text-h2 mt-8">Hi, Welcome Back</h2>
-                        <h4 class="text-disabled text-h4 mt-3">Enter your credentials to continue</h4>
+                        <h2 class="text-secondary text-h2 mt-8">Recupera tu contraseña</h2>
+                        <h4 class="text-disabled text-h4 mt-3">En tan solo un paso</h4>
                       </v-col>
                     </v-row>
                     <!---Left Part Logo -->
 
                     <!---Left Part Form-->
-                    <AuthLogin />
+                    <AuthRegister />
                     <!---Left Part Form-->
                   </v-card-text>
                 </v-card>

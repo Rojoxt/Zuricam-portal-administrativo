@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Logo from '@/layouts/full/logo/LogoDark.vue';
-import AuthRegister from '../authForms/AuthRegister.vue';
+import AuthLogin from '../components/AuthLogin.vue';
 </script>
 
 <template>
@@ -18,14 +18,14 @@ import AuthRegister from '../authForms/AuthRegister.vue';
                     <v-row>
                       <v-col cols="12" class="text-center">
                         <Logo />
-                        <h2 class="text-secondary text-h2 mt-8">Sign up</h2>
-                        <h4 class="text-disabled text-h4 mt-3">Enter credentials to continue</h4>
+                        <h2 class="text-secondary text-h2 mt-8">HOLA, BIENVENIDO</h2>
+                        <h4 class="text-disabled text-h4 mt-3">Introduce tus credenciales para continuar</h4>
                       </v-col>
                     </v-row>
                     <!---Left Part Logo -->
 
                     <!---Left Part Form-->
-                    <AuthRegister />
+                    <AuthLogin />
                     <!---Left Part Form-->
                   </v-card-text>
                 </v-card>

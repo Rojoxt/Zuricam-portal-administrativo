@@ -15,6 +15,9 @@ import print from 'vue3-print-nb';
 
 const app = createApp(App);
 fakeBackend();
+
+
+
 app.use(router);
 app.use(PerfectScrollbar);
 app.use(createPinia());

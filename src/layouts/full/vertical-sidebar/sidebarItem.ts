@@ -9,8 +9,10 @@ import {
   DashboardIcon,
   BrandChromeIcon,
   HelpIcon,
-  IdIcon
+  IdIcon,
+  CameraPlusIcon, UserPlusIcon, CarIcon, FileReportIcon
 } from 'vue-tabler-icons';
+
 
 export interface menu {
   header?: string;
@@ -38,26 +40,29 @@ let sidebarItem: menu[] = [
   { divider: true },
   { header: 'Pages' },
   {
-    title: 'Gestión de conductores',
-    icon: IdIcon,
-    to : { name:'UserManagement'},
+    title: 'Gestión de administradores',
+    icon: UserPlusIcon,
+    to: { name: 'UserManagement' }
   },
   {
-    title: 'Authentication',
-    icon: KeyIcon,
-    to: '/auth',
-    children: [
-      {
-        title: 'Login',
-        icon: CircleIcon,
-        to: '/auth/login'
-      },
-      {
-        title: 'Register',
-        icon: CircleIcon,
-        to: '/auth/register'
-      }
-    ]
+    title: 'Gestión de conductores',
+    icon: IdIcon,
+    to: { name: 'DriverManagement' }
+  },
+  {
+    title: 'Gestión de camaras',
+    icon: CameraPlusIcon,
+    to: { name: 'CameraManagement' }
+  },
+  {
+    title: 'Gestión de Unidades',
+    icon: CarIcon,
+    to: { name: 'UnitManagement' }
+  },
+  {
+    title: 'Gestión de Reporte',
+    icon: FileReportIcon,
+    to: { name: 'ReportManagement' }
   },
   {
     title: 'Error 404',
@@ -66,16 +71,6 @@ let sidebarItem: menu[] = [
   },
   { divider: true },
   { header: 'Utilities' },
-  {
-    title: 'Typography',
-    icon: TypographyIcon,
-    to: '/utils/typography'
-  },
-  {
-    title: 'Shadows',
-    icon: ShadowIcon,
-    to: '/utils/shadows'
-  },
   {
     title: 'Colors',
     icon: PaletteIcon,
@@ -100,17 +95,8 @@ let sidebarItem: menu[] = [
     ]
   },
   { divider: true },
-  {
-    title: 'Sample Page',
-    icon: BrandChromeIcon,
-    to: '/starter'
-  },
-  {
-    title: 'Documentation',
-    icon: HelpIcon,
-    to: 'https://codedthemes.gitbook.io/berry-vuetify/',
-    type: 'external'
-  }
+
+
 ];
 
 export default sidebarItem;
