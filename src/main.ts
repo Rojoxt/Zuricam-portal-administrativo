@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import App from './App.vue';
-import { router } from './router/index';
+import  router  from './router';
 import vuetify from './plugins/vuetify';
 import '@/scss/style.scss';
 import PerfectScrollbar from 'vue3-perfect-scrollbar';
@@ -17,10 +17,10 @@ const app = createApp(App);
 fakeBackend();
 
 
-
+app.use(createPinia());
 app.use(router);
 app.use(PerfectScrollbar);
-app.use(createPinia());
+
 app.use(VueTablerIcons);
 app.use(print);
 app.use(VueApexCharts);

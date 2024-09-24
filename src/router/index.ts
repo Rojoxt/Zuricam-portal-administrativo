@@ -3,7 +3,7 @@ import MainRoutes from './MainRoutes';
 import AuthRoutes from './AuthRoutes';
 import { useAuthStore } from '@/security-management/stores/auth-store';
 
-export const router = createRouter({
+const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
@@ -45,3 +45,4 @@ router.beforeEach(async (to, from, next) => {
     next();
   }
 });
+export default router;
