@@ -3,7 +3,7 @@ import { ref } from 'vue';
 
 import { AuthService } from '@/security-management/services/auth-service';
 import { Form } from 'vee-validate';
-import { router } from '@/router';
+import  router  from '@/router';
 const email = ref('');
 const apiError = ref<string | null>(null);
 let dialog = ref(false);
