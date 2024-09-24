@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { AuthService } from '../services/auth-service';
-import { router } from '@/router';
+
 
 // Helper function to get the auth token from localStorage
 
