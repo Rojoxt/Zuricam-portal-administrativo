@@ -1,18 +1,4 @@
-import {
-  CircleIcon,
-  WindmillIcon,
-  TypographyIcon,
-  ShadowIcon,
-  PaletteIcon,
-  KeyIcon,
-  BugIcon,
-  DashboardIcon,
-  BrandChromeIcon,
-  HelpIcon,
-  IdIcon,
-  CameraPlusIcon, UserPlusIcon, CarIcon, FileReportIcon
-} from 'vue-tabler-icons';
-
+import { BugIcon, DashboardIcon, IdIcon, CameraPlusIcon, UserPlusIcon, CarIcon, FileReportIcon } from 'vue-tabler-icons';
 
 export interface menu {
   header?: string;
@@ -30,7 +16,7 @@ export interface menu {
   subCaption?: string;
 }
 
-let sidebarItem: menu[] = [
+const sidebarItem: menu[] = [
   { header: 'Dashboard' },
   {
     title: 'Default',
@@ -69,34 +55,7 @@ let sidebarItem: menu[] = [
     icon: BugIcon,
     to: '/pages/error'
   },
-  { divider: true },
-  { header: 'Utilities' },
-  {
-    title: 'Colors',
-    icon: PaletteIcon,
-    to: '/utils/colors'
-  },
-
-  {
-    title: 'Icons',
-    icon: WindmillIcon,
-    to: '/forms/radio',
-    children: [
-      {
-        title: 'Tabler Icons',
-        icon: CircleIcon,
-        to: '/icons/tabler'
-      },
-      {
-        title: 'Material Icons',
-        icon: CircleIcon,
-        to: '/icons/material'
-      }
-    ]
-  },
-  { divider: true },
-
-
+  { divider: true }
 ];
 
 export default sidebarItem;

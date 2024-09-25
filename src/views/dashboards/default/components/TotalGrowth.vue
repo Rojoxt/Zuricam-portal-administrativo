@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+
+import { ReportService } from '@/report-management/services/report-service';
+
+const reportService = new ReportService();
+
+const reports = ref<ReportModel[]>([]);
 
 const select = ref({ state: 'Today', abbr: 'FL' });
 const items = [
@@ -7,6 +13,14 @@ const items = [
   { state: 'This Month', abbr: 'GA' },
   { state: 'This Year', abbr: 'NE' }
 ];
+onMounted(() => {
+  getAllReports();
+});
+async function getAllReports() {
+  const response = await reportService.getAll();
+  reports.value = response.data.result;
+  console.log('Response data:', response.data.detail);
+}
 
 // chart 1
 const chartOptions1 = computed(() => {
