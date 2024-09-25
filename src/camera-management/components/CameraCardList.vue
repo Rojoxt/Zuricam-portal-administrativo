@@ -85,7 +85,6 @@
         </v-combobox>
         <small class="text-caption text-medium-emphasis"
         >*indicates required field</small>
-        {{camera}}
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
