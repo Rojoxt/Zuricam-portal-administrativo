@@ -49,7 +49,7 @@
                   items-per-page="5"
     >
       <template v-slot:item.unitId="{ item }">
-        {{ getCarPlateUnit(item.unitId) }}
+        {{ getCarPlateUnit(item.unitId ?? 0)}}
       </template>
       <template v-slot:item.actions="{ item}">
         <v-btn size="small" class="ma-1 " color="primary" icon="mdi-pencil"
@@ -74,14 +74,14 @@
           density="compact"
           variant="outlined"
           color="secondary"
-          v-model="camera.unitId"
+          modelValue="camera.unitId"
           :items="units"
           item-title="carPlate"
           item-value="id"
           label="Bus"
           :return-object='false'
           required
-        >
+         >
         </v-combobox>
         <small class="text-caption text-medium-emphasis"
         >*indicates required field</small>
@@ -148,9 +148,9 @@ const cameraService = new CameraService();
 const unitService= new UnitService();
 const cameraDialog = ref(false);
 const deleteCameraDialog = ref(false);
-const camera = ref<CreateCameraModel>({});
+const camera = ref<Partial<CameraModel>>({});
 let cameras = ref<CameraModel[]>([]);
-let units= ref([]);
+let units= ref<UnitModel[]>([]);
 
 //configuration snackbars
 const snackbar = ref(false);
@@ -245,7 +245,7 @@ const deleteCamera=()=>{
     addToast('Success', `${response.data.detail}`, 'success');
     getAllCameras()
   });
-  camera.value = { dni: 0, image: '', lastName: '', name: '' };
+  camera.value = { name: '', location: '', unitId: 0};
   deleteCameraDialog.value = false;
 
 }
