@@ -9,11 +9,11 @@ export class CameraService {
     return http.get(`/camera/${id}`);
   }
 
-  create(data: CreateUnitModel) {
+  create(data: CreateCameraModel) {
     return http.post('/camera', data);
   }
 
-  update(id: number, data: CreateUnitModel) {
+  update(id: number, data: CreateCameraModel) {
     return http.put(`/camera/${id}`, data); // Corregido aquí
   }
 

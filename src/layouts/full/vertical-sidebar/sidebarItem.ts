@@ -18,7 +18,7 @@ export interface menu {
   header?: string;
   title?: string;
   icon?: object;
-  to?: string;
+  to?: string | { name: string };
   divider?: boolean;
   chip?: string;
   chipColor?: string;

@@ -4,7 +4,7 @@ interface CreateUnitModel {
 }
 
 interface UnitModel extends CreateUnitModel {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
+  id?: number;
+  createdAt?: string;
+  updatedAt?: string;
 }

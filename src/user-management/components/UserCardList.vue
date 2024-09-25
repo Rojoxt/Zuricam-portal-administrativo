@@ -51,11 +51,11 @@
         <v-chip
           v-if="item.permissions && item.permissions.length > 0"
           class="ma-2"
-          :color="getPermission(item.permissions[0]).color"
+          :color="getPermission(item.permissions?.[0])?.color"
           label
         >
           <v-icon icon="mdi-label" start></v-icon>
-          {{ getPermission(item.permissions[0]).name }}
+          {{ getPermission(item.permissions?.[0])?.name }}
         </v-chip>
 
         <span v-else>No permissions</span>
@@ -83,6 +83,8 @@
                       v-model.trim="user.firstName"></v-text-field>
         <v-text-field density="compact" label="Apellidos*" variant="outlined" color="secondary" required
                       v-model.trim="user.lastName"></v-text-field>
+        <v-text-field density="compact" type="number"label="Dni*" variant="outlined" color="secondary" required
+                      v-model.trim="user.dni"></v-text-field>
         <v-text-field density="compact" placeholder="correo@gmail.com" type="email" label="Correo*" variant="outlined"
                       color="secondary" required
                       v-model.trim="user.email"></v-text-field>
@@ -115,7 +117,7 @@
           color="primary"
           text="Save"
           variant="tonal"
-          @click="saveUser({driver : user})"
+          @click="saveUser()"
         ></v-btn>
       </v-card-actions>
     </v-card>
@@ -166,8 +168,18 @@ const search = ref('');
 const userService = new UserService();
 const userDialog = ref(false);
 const deleteUserDialog = ref(false);
-let user = ref<CreateUserModel>();
-let users = ref<AuthModel[]>([]);
+const newUser: CreateUserModel = {
+  dni: 0,
+  permissions: [],
+  email: '',
+  firstName: '',
+  headquarter: '',
+  lastName: '',
+  username: ''
+};
+let user = ref<CreateUserModel & { id?: number }>(newUser);
+
+let users = ref<UserModel[]>([]);
 
 //configuration snackbars
 const snackbar = ref(false);
@@ -193,14 +205,13 @@ async function getAllUser() {
 
 
 const openNew = () => {
-  user.value = { permissions: [0] };
+  user.value = { ...newUser };
   userDialog.value = true;
 };
 
 const editUser = ({ item }: { item: any }) => {
-  user.value = { ...item, permissions: [...item.permissions] };
+  user.value = { ...item, permissions: item.permissions || [] };
   userDialog.value = true;
-
 };
 const saveUser = () => {
   const userResource = {
@@ -208,8 +219,9 @@ const saveUser = () => {
     firstName: user.value.firstName,
     lastName: user.value.lastName,
     email: user.value.email,
+    dni: user.value.dni,
     headquarter: user.value.headquarter,
-    permissions: user.value.permissions,
+    permissions: user.value.permissions || [],
   };
 
   if (user.value.username && user.value.firstName && user.value.lastName) {
@@ -226,7 +238,7 @@ const saveUser = () => {
       });
     }
     userDialog.value = false;
-    user.value = {permissions: []}; // Reinicia el objeto user
+    user.value = {...newUser}; // Reinicia el objeto user
   } else {
     addToast('Error', 'Faltan datos', 'error');
   }
@@ -256,7 +268,7 @@ const deleteDriver = () => {
     addToast('Success', `${response.data.detail}`, 'success');
     getAllUser();
   });
-  user.value = { carPlate: '', driverId: 0 };
+  user.value = { ...newUser };
   deleteUserDialog.value = false;
 
 };

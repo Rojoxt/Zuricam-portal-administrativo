@@ -49,7 +49,7 @@
                   items-per-page="5"
     >
       <template v-slot:item.unitId="{ item }">
-        {{ getCarPlateUnit(item.unitId) }}
+        {{ getCarPlateUnit(item.unitId ?? 0) }}
       </template>
       <template v-slot:item.actions="{ item}">
         <v-btn size="small" class="ma-1 " color="primary" icon="mdi-pencil"
@@ -155,7 +155,7 @@ const reportDialog = ref(false);
 const deleteReportDialog = ref(false);
 const report = ref<CreateReportModel>({});
 let reports = ref<ReportModel[]>([]);
-let units= ref([]);
+let units= ref<UnitModel[]>([]);
 
 //configuration snackbars
 const snackbar = ref(false);

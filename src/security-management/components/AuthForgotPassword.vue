@@ -3,7 +3,9 @@ import { ref } from 'vue';
 
 import { AuthService } from '@/security-management/services/auth-service';
 import { Form } from 'vee-validate';
-import  router  from '@/router';
+import { router } from '@/router';
+import { AxiosError } from 'axios';
+
 const email = ref('');
 const apiError = ref<string | null>(null);
 let dialog = ref(false);
@@ -15,12 +17,15 @@ async function validate() {
   apiError.value = null; // Resetea el error antes de la validación
   try {
     await authService.resetPassword(email.value);
-    dialog.value=true;
+    dialog.value = true;
     await router.push('/auth/login');
 
     // Aquí podrías redirigir al usuario o mostrar un mensaje de éxito
   } catch (error) {
-    switch (error.response.data.detail) {
+    if (!(error instanceof AxiosError)) {
+      return;
+    }
+    switch (error.response?.data?.detail) {
       case 'Email not existed':
         apiError.value = 'Correo no existe';// Almacena el mensaje de error
         break;
@@ -52,7 +57,9 @@ async function validate() {
       variant="outlined"
       color="primary"
     />
-    <v-btn color="secondary" :loading="isSubmitting" block class="mt-2" variant="flat" size="large" type="submit">Recuperar contraseña</v-btn>
+    <v-btn color="secondary" :loading="isSubmitting" block class="mt-2" variant="flat" size="large" type="submit">
+      Recuperar contraseña
+    </v-btn>
     <div v-if="apiError" class="mt-2">
       <v-alert color="error">{{ apiError }}</v-alert>
     </div>

@@ -26,7 +26,7 @@ interface User {
 interface AuthStore {
   user: User | null;
   returnUrl: string | null;
-  login(username: string, password: string): Promise<void>;
+  login(authModel: AuthModel): Promise<void>;
   logout(): void;
 }
 

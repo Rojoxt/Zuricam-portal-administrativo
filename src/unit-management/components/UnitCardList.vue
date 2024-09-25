@@ -48,7 +48,7 @@
                   items-per-page="5"
     >
       <template v-slot:item.driverId="{ item }">
-        {{ getNameDriver(item.driverId) }}
+        {{ getNameDriver(item.driverId ?? 0) }}
       </template>
       <template v-slot:item.actions="{ item}">
         <v-btn size="small" class="ma-1 " color="primary" icon="mdi-pencil"
@@ -137,7 +137,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, type UnwrapRef, watch } from 'vue';
 import { UnitService } from '@/unit-management/services/unit-service';
 import { exportToExcel } from '@/core/utils/excelExporter';
 import { DriverService } from '@/unit-management/services/driver-service';
@@ -148,9 +148,9 @@ const unitService = new UnitService();
 const driverService = new DriverService();
 const unitDialog = ref(false);
 const deleteUnitDialog = ref(false);
-let unit = ref<CreateUnitModel>({});
+let unit = ref<Partial<UnitModel>>({});
 let units = ref<UnitModel[]>([]);
-let drivers = ref([]);
+let drivers = ref<DriverModel[]>([]);
 
 
 //configuration snackbars
@@ -202,7 +202,7 @@ const editUnit = ({ item }: { item: any }) => {
   unitDialog.value = true;
 
 };
-const saveUnit = () => {
+const saveUnit = (p: { driver: UnwrapRef<CreateUnitModel> }) => {
   const unitResource = {
     carPlate: unit.value.carPlate,
     driverId: unit.value.driverId

@@ -73,15 +73,6 @@
     <v-card prepend-icon="mdi-account" title="Perfil de conductor">
 
       <v-card-text>
-        <v-combobox
-          density="compact"
-          label="Conductor*"
-          :items="drivers"
-          item-text="name"
-          variant="outlined"
-          color="secondary" required
-        ></v-combobox>
-
 
         <v-text-field density="compact" label="Nombre*" variant="outlined" color="secondary" required
                       v-model.trim="driver.name"></v-text-field>
