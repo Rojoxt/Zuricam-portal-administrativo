@@ -1,6 +1,5 @@
-
 <template>
-<h1>CameraCardList</h1>
+  <h1>CameraCardList</h1>
   <v-card flat class="pa-md-10 ">
     <v-card flat class="rounded-sm border-md">
       <v-container>
@@ -50,7 +49,7 @@
                   items-per-page="5"
     >
       <template v-slot:item.unitId="{ item }">
-        {{ getCarPlateUnit(item.unitId ?? 0) }}
+        {{ getCarPlateUnit(item.unitId) }}
       </template>
       <template v-slot:item.actions="{ item}">
         <v-btn size="small" class="ma-1 " color="primary" icon="mdi-pencil"
@@ -75,7 +74,7 @@
           density="compact"
           variant="outlined"
           color="secondary"
-          :v-model="camera.unitId"
+          v-model="camera.unitId"
           :items="units"
           item-title="carPlate"
           item-value="id"
@@ -151,7 +150,7 @@ const cameraDialog = ref(false);
 const deleteCameraDialog = ref(false);
 const camera = ref<CreateCameraModel>({});
 let cameras = ref<CameraModel[]>([]);
-let units= ref<UnitModel[]>([]);
+let units= ref([]);
 
 //configuration snackbars
 const snackbar = ref(false);
@@ -246,7 +245,7 @@ const deleteCamera=()=>{
     addToast('Success', `${response.data.detail}`, 'success');
     getAllCameras()
   });
-  camera.value = { name: '', location: '', unitId: 0 };
+  camera.value = { dni: 0, image: '', lastName: '', name: '' };
   deleteCameraDialog.value = false;
 
 }
