@@ -4,6 +4,7 @@
   "compilerOptions": {
     "module": "ESNext",
     "ignoreDeprecations": "5.0",
+    "types": ["node"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
