@@ -131,7 +131,7 @@
     variant="tonal"
     top
   >
-    <strong>{{ snackbarTitle }}</strong>
+    <strong>{{ snackbarTitle }} </strong>
     <p>{{ snackbarMessage }}</p>
   </v-snackbar>
 </template>
