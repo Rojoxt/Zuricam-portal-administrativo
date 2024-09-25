@@ -12,6 +12,7 @@ export const useAuthStore = defineStore('auth', {
 
   actions: {
     async login(authModel: AuthModel) {
+      console.log('API Base URL:', process.env.VUE_APP_API_URL);
       try {
         // Authenticate user and get user data
         const response = await AuthService.login(authModel);
