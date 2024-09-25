@@ -1,16 +1,14 @@
 import { defineStore } from 'pinia';
 import { AuthService } from '../services/auth-service';
-
+import { router } from '@/router';
 
 // Helper function to get the auth token from localStorage
 
-
-export const useAuthStore = defineStore('auth',{
-    state: () => ({
-      user: JSON.parse(localStorage.getItem('user')|| 'null'),
-      returnUrl: null
-    }),
-
+export const useAuthStore = defineStore('auth', {
+  state: () => ({
+    user: JSON.parse(localStorage.getItem('user') || 'null'),
+    returnUrl: null
+  }),
 
   actions: {
     async login(authModel: AuthModel) {
@@ -38,8 +36,8 @@ export const useAuthStore = defineStore('auth',{
       // Remove token and token type from localStorage
       localStorage.removeItem('user');
       router.push('/auth/login');
-    },
+    }
 
     // Optionally, add a method to check if the user is authentica
-  },
+  }
 });
