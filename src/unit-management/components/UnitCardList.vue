@@ -137,13 +137,13 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, type UnwrapRef, watch } from 'vue';
-import { UnitService } from '@/unit-management/services/unit-service';
-import { exportToExcel } from '@/core/utils/excelExporter';
-import { DriverService } from '@/unit-management/services/driver-service';
+import { onMounted, ref, type UnwrapRef, watch } from "vue";
+import { UnitService } from "@/unit-management/services/unit-service";
+import { exportToExcel } from "@/core/utils/excelExporter";
+import { DriverService } from "@/unit-management/services/driver-service";
 
 
-const search = ref('');
+const search = ref("");
 const unitService = new UnitService();
 const driverService = new DriverService();
 const unitDialog = ref(false);
@@ -155,9 +155,9 @@ let drivers = ref<DriverModel[]>([]);
 
 //configuration snackbars
 const snackbar = ref(false);
-const snackbarMessage = ref('');
-const snackbarColor = ref('');
-const snackbarTitle = ref('');
+const snackbarMessage = ref("");
+const snackbarColor = ref("");
+const snackbarTitle = ref("");
 
 
 onMounted(() => {
@@ -172,22 +172,22 @@ const exportCSV = () => {
 
 function getNameDriver(driverId: number) {
   const driver = drivers.value.find(driver => driver.id === driverId);
-  return driver ? `${driver.name} ${driver.lastName}` : 'Driver not found';
+  return driver ? `${driver.name} ${driver.lastName}` : "Driver not found";
 }
 
 
 async function getAllUnits() {
   const response = await unitService.getAll();
   units.value = response.data.result;
-  console.log('Response data:', response.data.detail);
+  console.log("Response data:", response.data.detail);
 }
 
 async function getAllDriver() {
   const response = await driverService.getAll();
   drivers.value = response.data.result;
 
-  console.log('Response data:', response.data.detail);
-  console.log('Response data:', drivers);
+  console.log("Response data:", response.data.detail);
+  console.log("Response data:", drivers);
 
 }
 
@@ -211,20 +211,20 @@ const saveUnit = (p: { driver: UnwrapRef<CreateUnitModel> }) => {
   if (unit.value.carPlate && unit.value.carPlate.trim() && unit.value.driverId) {
     if (unit.value.id) {
       unitService.update(unit.value.id, unitResource).then(response => {
-        addToast('Success', `${response.data.detail}`, 'success');
+        addToast("Success", `${response.data.detail}`, "success");
         getAllUnits();
       });
     } else {
       // new unit
       unitService.create(unitResource).then(response => {
-        addToast('Success', `${response.data.detail}`, 'success');
+        addToast("Success", `${response.data.detail}`, "success");
         getAllUnits();
       });
     }
     unitDialog.value = false;
     unit.value = {}; // Reinicia el objeto unit
   } else {
-    addToast('Error', 'Faltan datos', 'error');
+    addToast("Error", "Faltan datos", "error");
   }
 };
 
@@ -249,21 +249,21 @@ const deleteDriver = () => {
 
   //drivers.value = drivers.value.filter((val) => val.id !== id);
   unitService.delete(id).then(response => {
-    addToast('Success', `${response.data.detail}`, 'success');
+    addToast("Success", `${response.data.detail}`, "success");
     getAllUnits();
   });
-  unit.value = { carPlate: '', driverId: 0 };
+  unit.value = { carPlate: "", driverId: 0 };
   deleteUnitDialog.value = false;
 
 };
 
 
 const headers = [
-  { key: 'carPlate', title: 'Placa' },
-  { key: 'driverId', title: 'Conductor Asignado' },
-  { key: 'createdAt', title: 'createdAt' },
-  { key: 'updatedAt', title: 'updatedAt' },
-  { key: 'actions', title: 'Acciones', sortable: false }
+  { key: "carPlate", title: "Placa" },
+  { key: "driverId", title: "Conductor Asignado" },
+  { key: "createdAt", title: "createdAt" },
+  { key: "updatedAt", title: "updatedAt" },
+  { key: "actions", title: "Acciones", sortable: false }
 ];
 
 

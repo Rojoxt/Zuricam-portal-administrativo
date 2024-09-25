@@ -1,13 +1,27 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue';
+import { onMounted, ref, shallowRef } from 'vue';
 import { ArchiveIcon, CopyIcon, DownloadIcon, FileExportIcon } from 'vue-tabler-icons';
 import iconCard from '@/assets/images/icons/icon-card.svg';
+import { ReportService } from '@/report-management/services/report-service';
+
+const reportService = new ReportService();
+
+const reports = ref<ReportModel[]>([]);
 const items = shallowRef([
   { title: 'Import Card', icon: DownloadIcon },
   { title: 'Copy Data', icon: CopyIcon },
   { title: 'Export', icon: FileExportIcon },
   { title: 'Archive File', icon: ArchiveIcon }
 ]);
+
+onMounted(() => {
+  getAllReports();
+});
+async function getAllReports() {
+  const response = await reportService.getAll();
+  reports.value = response.data.result;
+  console.log('Response data:', response.data.detail);
+}
 </script>
 
 <template>
@@ -38,9 +52,9 @@ const items = shallowRef([
         </div>
       </div>
       <h2 class="text-h1 font-weight-medium">
-        $500.00 <a href="#"><CircleArrowUpRightIcon stroke-width="1.5" width="28" class="text-white" /> </a>
+        {{ reports.length }} <a href="#"><CircleArrowUpRightIcon stroke-width="1.5" width="28" class="text-white" /> </a>
       </h2>
-      <span class="text-subtitle-1 text-medium-emphasis text-white">Total Earning</span>
+      <span class="text-subtitle-1 text-medium-emphasis text-white">Total de Reportes</span>
     </v-card-text>
   </v-card>
 </template>

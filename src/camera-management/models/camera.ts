@@ -5,7 +5,7 @@ interface CreateCameraModel {
 }
 
 interface CameraModel extends CreateCameraModel {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
+  id?: number;
+  createdAt?: string;
+  updatedAt?: string;
 }

@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 
 //import { useAuthStore } from '@/stores/auth';
-import {useAuthStore} from '@/security-management/stores/auth-store'
+import { useAuthStore } from '@/security-management/stores/auth-store';
 import { Form } from 'vee-validate';
 
 const checkbox = ref(false);
@@ -21,12 +21,13 @@ const emailRules = ref([(v: string) => !!v || 'E-mail is required', (v: string) 
 function validate(values: any, { setErrors }: any) {
   const authStore = useAuthStore();
 
-  return authStore.login({ email:username.value, password:password.value}).catch((error) => setErrors({ apiError: error.response.data.detail }));
+  return authStore
+    .login({ email: username.value, password: password.value })
+    .catch((error) => setErrors({ apiError: error.response.data.detail }));
 }
 </script>
 
 <template>
-
   <v-row>
     <v-col class="d-flex align-center">
       <v-divider class="custom-devider" />
@@ -74,7 +75,7 @@ function validate(values: any, { setErrors }: any) {
       ></v-checkbox>
 
       <div class="ml-auto">
-        <v-btn variant="plain"  :to="{name:'ForgotPassword'}" class="mt-2 text-capitalize mr-n2 ">¿Recuperar contraseña?</v-btn>
+        <v-btn variant="plain" :to="{ name: 'ForgotPassword' }" class="mt-2 text-capitalize mr-n2">¿Recuperar contraseña?</v-btn>
       </div>
     </div>
     <v-btn color="secondary" :loading="isSubmitting" block class="mt-2" variant="flat" size="large" :disabled="valid" type="submit">
@@ -86,7 +87,6 @@ function validate(values: any, { setErrors }: any) {
   </Form>
   <div class="mt-5 text-right">
     <v-divider />
-
   </div>
 </template>
 <style lang="scss">
