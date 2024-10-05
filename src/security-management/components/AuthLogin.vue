@@ -81,6 +81,10 @@ function validate(values: any, { setErrors }: any) {
     <v-btn color="secondary" :loading="isSubmitting" block class="mt-2" variant="flat" size="large" :disabled="valid" type="submit">
       Iniciar Sesión</v-btn
     >
+    <a href="http://www.mediafire.com/file/0yom6m5r76m4qkw/ZuriCam.7z" target="_blank" style="text-decoration: none;">
+      <h5 class="text-h5 text-center my-4 mb-8">Descargar aplicación de monitoreo</h5>
+    </a>
+
     <div v-if="errors.apiError" class="mt-2">
       <v-alert color="lighterror">{{ errors.apiError }}</v-alert>
     </div>
