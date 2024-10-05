@@ -9,13 +9,13 @@ const checkbox = ref(false);
 const valid = ref(false);
 const show1 = ref(false);
 //const logform = ref();
-const password = ref('admin123');
-const username = ref('info@codedthemes.com');
+const password = ref('');
+const username = ref('');
 const passwordRules = ref([
-  (v: string) => !!v || 'Password is required',
+  (v: string) => !!v || 'Se requiere contraseña',
   (v: string) => (v && v.length <= 13) || 'Password must be less than 10 characters'
 ]);
-const emailRules = ref([(v: string) => !!v || 'E-mail is required', (v: string) => /.+@.+\..+/.test(v) || 'E-mail must be valid']);
+const emailRules = ref([(v: string) => !!v || 'Se requiere correo', (v: string) => /.+@.+\..+/.test(v) || 'El correo debe ser válido']);
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 function validate(values: any, { setErrors }: any) {
@@ -35,12 +35,11 @@ function validate(values: any, { setErrors }: any) {
       <v-divider class="custom-devider" />
     </v-col>
   </v-row>
-  <h5 class="text-h5 text-center my-4 mb-8">Iniciar sesión con dirección de correo electrónico</h5>
   <Form @submit="validate" class="mt-7 loginForm" v-slot="{ errors, isSubmitting }">
     <v-text-field
       v-model="username"
       :rules="emailRules"
-      label="Email Address / Username"
+      label="Correo Electrónico / Usuario"
       class="mt-4 mb-8"
       required
       density="comfortable"
@@ -51,7 +50,7 @@ function validate(values: any, { setErrors }: any) {
     <v-text-field
       v-model="password"
       :rules="passwordRules"
-      label="Password"
+      label="Contraseña"
       required
       density="comfortable"
       variant="outlined"
@@ -64,19 +63,6 @@ function validate(values: any, { setErrors }: any) {
     ></v-text-field>
 
     <div class="d-sm-flex align-center mt-2 mb-7 mb-sm-0">
-      <v-checkbox
-        v-model="checkbox"
-        :rules="[(v: any) => !!v || 'You must agree to continue!']"
-        label="Remember me?"
-        required
-        color="primary"
-        class="ms-n2"
-        hide-details
-      ></v-checkbox>
-
-      <div class="ml-auto">
-        <v-btn variant="plain" :to="{ name: 'ForgotPassword' }" class="mt-2 text-capitalize mr-n2">¿Recuperar contraseña?</v-btn>
-      </div>
     </div>
     <v-btn color="secondary" :loading="isSubmitting" block class="mt-2" variant="flat" size="large" :disabled="valid" type="submit">
       Iniciar Sesión</v-btn
