@@ -24,6 +24,4 @@ export class CameraService {
   findByName(name: string) {
     return http.get(`/camera?name=${name}`);
   }
-
-
 }

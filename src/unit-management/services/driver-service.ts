@@ -24,6 +24,4 @@ export class DriverService {
   findByName(name: string) {
     return http.get(`/driver?name=${name}`);
   }
-
-
 }

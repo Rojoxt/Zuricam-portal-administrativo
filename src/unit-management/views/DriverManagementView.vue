@@ -5,7 +5,6 @@
 </template>
 
 <script setup lang="ts">
-
 import DriverCardList from '@/unit-management/components/DriverCardList.vue';
 </script>
 

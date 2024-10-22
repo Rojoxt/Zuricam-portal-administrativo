@@ -5,7 +5,8 @@ interface CreateUserModel {
   dni: number;
   email: string;
   headquarter: string;
-  permissions:number[] ;
+  permissions: number[];
+  isActive: boolean;
 }
 
 interface UserModel extends CreateUserModel {

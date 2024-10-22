@@ -4,9 +4,6 @@
   </v-card>
 </template>
 <script setup lang="ts">
-
 import CameraCardList from '@/camera-management/components/CameraCardList.vue';
 </script>
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

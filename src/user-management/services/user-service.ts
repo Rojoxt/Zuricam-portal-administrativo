@@ -24,6 +24,4 @@ export class UserService {
   findByName(name: string) {
     return http.get(`/user?name=${name}`);
   }
-
-
 }

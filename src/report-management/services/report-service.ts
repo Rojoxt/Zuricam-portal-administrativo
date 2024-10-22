@@ -24,6 +24,4 @@ export class ReportService {
   findByName(name: string) {
     return http.get(`/report?name=${name}`);
   }
-
-
 }

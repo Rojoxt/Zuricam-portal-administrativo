@@ -12,7 +12,6 @@ const config: ConfigProps = {
   mini_sidebar: false,
   fontTheme: 'Roboto',
   inputBg: false
-
 };
 
 export default config;

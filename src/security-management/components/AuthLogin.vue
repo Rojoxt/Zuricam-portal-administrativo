@@ -21,9 +21,30 @@ const emailRules = ref([(v: string) => !!v || 'Se requiere correo', (v: string) 
 function validate(values: any, { setErrors }: any) {
   const authStore = useAuthStore();
 
-  return authStore
-    .login({ email: username.value, password: password.value })
-    .catch((error) => setErrors({ apiError: error.response.data.detail }));
+  return authStore.login({ email: username.value, password: password.value }).catch((error) => {
+    if (error.response) {
+      // console.error('Error response data:', error.response.data);
+
+      // Verifica la respuesta del error y traduce los mensajes
+      switch (error.response.data.detail) {
+        case 'Email not registered':
+          setErrors({ apiError: 'Correo no existe' });
+          break;
+        case 'Password or email incorrect':
+          setErrors({ apiError: 'Correo o contraseña incorrecta' });
+          break;
+        case 'The account is deactivated':
+          setErrors({ apiError: 'La cuenta está desactivada' });
+          break;
+        default:
+          setErrors({ apiError: 'Error desconocido' });
+          break;
+      }
+    } else {
+      console.error('Error sin respuesta de servidor:', error);
+      setErrors({ apiError: 'Error de conexión con el servidor' });
+    }
+  });
 }
 </script>
 
@@ -62,12 +83,11 @@ function validate(values: any, { setErrors }: any) {
       class="pwdInput"
     ></v-text-field>
 
-    <div class="d-sm-flex align-center mt-2 mb-7 mb-sm-0">
-    </div>
+    <div class="d-sm-flex align-center mt-2 mb-7 mb-sm-0"></div>
     <v-btn color="secondary" :loading="isSubmitting" block class="mt-2" variant="flat" size="large" :disabled="valid" type="submit">
-      Iniciar Sesión</v-btn
-    >
-    <a href="http://www.mediafire.com/file/0yom6m5r76m4qkw/ZuriCam.7z" target="_blank" style="text-decoration: none;">
+      Iniciar Sesión
+    </v-btn>
+    <a href="http://www.mediafire.com/file/0yom6m5r76m4qkw/ZuriCam.7z" target="_blank" style="text-decoration: none">
       <h5 class="text-h5 text-center my-4 mb-8">Descargar aplicación de monitoreo</h5>
     </a>
 
@@ -83,21 +103,26 @@ function validate(values: any, { setErrors }: any) {
 .custom-devider {
   border-color: rgba(0, 0, 0, 0.08) !important;
 }
+
 .googleBtn {
   border-color: rgba(0, 0, 0, 0.08);
   margin: 30px 0 20px 0;
 }
+
 .outlinedInput .v-field {
   border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: none;
 }
+
 .orbtn {
   padding: 2px 40px;
   border-color: rgba(0, 0, 0, 0.08);
   margin: 20px 15px;
 }
+
 .pwdInput {
   position: relative;
+
   .v-input__append {
     position: absolute;
     right: 10px;
@@ -105,6 +130,7 @@ function validate(values: any, { setErrors }: any) {
     transform: translateY(-50%);
   }
 }
+
 .loginForm {
   .v-text-field .v-field--active input {
     font-weight: 500;

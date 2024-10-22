@@ -9,5 +9,4 @@ export class AuthService {
     const url = `/auth/reset-password?email=${encodeURIComponent(email)}`;
     return http.patch(url);
   }
-
 }

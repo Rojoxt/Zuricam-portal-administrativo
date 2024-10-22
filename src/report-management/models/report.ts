@@ -4,7 +4,6 @@ interface CreateReportModel {
   trackingLink?: string;
   image?: string;
   unitId?: number;
-
 }
 
 interface ReportModel extends CreateReportModel {
