@@ -34,11 +34,7 @@
 
     <v-divider></v-divider>
     <v-data-table v-model:search="search" :headers="headers" :items="drivers" items-per-page="5">
-      <template v-slot:item.image="{ item }">
-        <v-card class="my-2" elevation="2" rounded>
-          <v-img :src="`${item.image}`" height="64" cover></v-img>
-        </v-card>
-      </template>
+
       <template v-slot:item.actions="{ item }">
         <v-btn size="small" class="ma-1" color="primary" icon="mdi-pencil" @click="editDriver({ item: item })"></v-btn>
         <v-btn size="small" class="ma-1" color="error" icon="mdi-delete" @click="confirmDeleteProduct({ item: item })"></v-btn>
@@ -75,16 +71,9 @@
           type="number"
           :rules="[(v) => /^\d{8}$/.test(v) || 'El DNI debe tener exactamente 8 números']"
         ></v-text-field>
-        <v-text-field
-          density="compact"
-          v-model.trim="driver.image"
-          label="Imagen url*"
-          variant="outlined"
-          color="secondary"
-          required
-        ></v-text-field>
 
-        <small class="text-caption text-medium-emphasis">*indicates required field</small>
+
+        <small class="text-caption text-medium-emphasis">* obligatorio</small>
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
@@ -97,7 +86,7 @@
 
   <v-dialog v-model="deleteDriverDialog" max-width="400">
     <v-card prepend-icon="mdi-delete" title="Confirmacion">
-      "Are you sure you want to delete {{ driver.name }}"
+      Estas seguro de eliminar: {{ driver.name }}
       <v-divider></v-divider>
       <template v-slot:actions>
         <v-spacer></v-spacer>
@@ -159,7 +148,6 @@ const editDriver = ({ item }: { item: any }) => {
 const saveDriver = ({ driver }: { driver: any }) => {
   const driverResource = {
     dni: driver.dni,
-    image: driver.image,
     lastName: driver.lastName,
     name: driver.name
   };
@@ -214,7 +202,6 @@ const headers = [
   { key: 'name', title: 'Nombre' },
   { key: 'lastName', title: 'Apellido' },
   { key: 'dni', title: 'DNI' },
-  { key: 'image', title: 'Imagen' },
   { key: 'createdAt', title: 'createdAt' },
   { key: 'updatedAt', title: 'updatedAt' },
   { key: 'actions', title: 'Acciones', sortable: false }

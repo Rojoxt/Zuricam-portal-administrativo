@@ -55,6 +55,7 @@
         <span v-else>No permissions</span>
       </template>
       <template v-slot:item.actions="{ item }">
+        <v-btn size="small" class="ma-1" color="secondary" icon="mdi-lock-reset" @click="resetPassword({ item: item })"></v-btn>
         <v-btn size="small" class="ma-1" color="primary" icon="mdi-pencil" @click="editUser({ item: item })"></v-btn>
         <v-btn size="small" class="ma-1" color="error" icon="mdi-delete" @click="confirmDeleteUnit({ item: item })"></v-btn>
       </template>
@@ -129,7 +130,6 @@
           item-value="index"
           label="Driver"
           :return-object="false"
-
         >
         </v-combobox>
 
@@ -144,7 +144,7 @@
         <v-spacer></v-spacer>
         <v-spacer></v-spacer>
 
-        <small class="text-caption text-medium-emphasis">*indicates required field</small>
+        <small class="text-caption text-medium-emphasis">*Obligatorio</small>
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
@@ -157,7 +157,7 @@
 
   <v-dialog v-model="deleteUserDialog" max-width="400">
     <v-card prepend-icon="mdi-delete" title="Confirmacion">
-      "Are you sure you want to delete {{ user.username }}"
+      Estas seguro de Eliminar al usuario : {{ user.username }}
       <v-divider></v-divider>
       <template v-slot:actions>
         <v-spacer></v-spacer>
@@ -242,6 +242,28 @@ const editUser = ({ item }: { item: any }) => {
   user.value = { ...item, permissions: item.permissions || [] };
   userDialog.value = true;
 };
+
+const resetPassword = async ({ item }: { item: any }) => {
+  try {
+    // Establece el usuario seleccionado para el reseteo de contraseña
+    user.value = { ...item };
+
+    // Llamada asíncrona para resetear la contraseña
+    const response = await userService.resetPassword(user.value.id);
+
+    // Mostrar mensaje de éxito con el detalle recibido del backend
+    addToast('Éxito', `${response.data.detail}`, 'success');
+  } catch (error) {
+    // Manejar cualquier error durante el proceso de reseteo de contraseña
+    if (error.response && error.response.data && error.response.data.detail) {
+      addToast('Error', `${error.response.data.detail}`, 'error');
+    } else {
+      addToast('Error', 'Ha ocurrido un error al intentar resetear la contraseña.', 'error');
+    }
+  }
+};
+
+
 const saveUser = () => {
   const userResource = {
     username: user.value.username,

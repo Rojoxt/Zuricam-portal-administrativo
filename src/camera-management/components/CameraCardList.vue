@@ -1,5 +1,4 @@
 <template>
-  <h1>CameraCardList</h1>
   <v-card flat class="pa-md-10">
     <v-card flat class="rounded-sm border-md">
       <v-container>
@@ -77,7 +76,15 @@
           required
         >
         </v-combobox>
-        <small class="text-caption text-medium-emphasis">*indicates required field</small>
+        <v-text-field
+          density="compact"
+          v-model.trim="camera.url"
+          label="Url*"
+          variant="outlined"
+          color="secondary"
+          required
+        ></v-text-field>
+        <small class="text-caption text-medium-emphasis">* obligatorio</small>
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
@@ -166,7 +173,8 @@ const saveCamera = ({ camera }: { camera: any }) => {
   const cameraResource = {
     name: camera.name,
     location: camera.location,
-    unitId: camera.unitId
+    unitId: camera.unitId,
+    url: camera.url
   };
 
   if (camera.name && camera.name.trim() && camera.location && camera.unitId) {
@@ -219,6 +227,7 @@ const headers = [
   { key: 'name', title: 'Nombre' },
   { key: 'location', title: 'Lugar' },
   { key: 'unitId', title: 'unidad' },
+  { key: 'url', title: 'url' },
   { key: 'createdAt', title: 'createdAt' },
   { key: 'updatedAt', title: 'updatedAt' },
   { key: 'actions', title: 'Acciones', sortable: false }

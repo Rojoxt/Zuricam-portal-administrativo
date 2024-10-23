@@ -1,8 +1,7 @@
 interface CreateDriverModel {
   name?: string;
   lastName?: string;
-  dni?: number;
-  image?: string;
+  dni?: number
 }
 
 interface DriverModel extends CreateDriverModel {

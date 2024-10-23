@@ -68,7 +68,7 @@
           required
         >
         </v-combobox>
-        <small class="text-caption text-medium-emphasis">*indicates required field</small>
+        <small class="text-caption text-medium-emphasis">* obligatorio</small>
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
@@ -81,7 +81,7 @@
 
   <v-dialog v-model="deleteUnitDialog" max-width="400">
     <v-card prepend-icon="mdi-delete" title="Confirmacion">
-      "Are you sure you want to delete {{ unit.carPlate }}"
+      Estas seguro de eliminar: {{ unit.carPlate }}
       <v-divider></v-divider>
       <template v-slot:actions>
         <v-spacer></v-spacer>

@@ -241,7 +241,6 @@ const headers = [
   { key: 'image', title: 'Imagen' },
   { key: 'unitId', title: 'Unidad' },
   { key: 'createdAt', title: 'createdAt' },
-  { key: 'updatedAt', title: 'updatedAt' },
   { key: 'actions', title: 'Acciones', sortable: false }
 ];
 </script>
