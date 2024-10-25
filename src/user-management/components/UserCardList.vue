@@ -9,8 +9,7 @@
           <v-col cols="auto"></v-col>
           <v-spacer></v-spacer>
           <v-col cols="auto">
-            <v-btn type="success" color="secondary" prepend-icon="mdi-tray-arrow-up" class="ma-1">Import</v-btn>
-            <v-btn type="success" color="secondary200" prepend-icon="mdi-tray-arrow-up" class="ma-1" @click="exportCSV"> Export </v-btn>
+            <v-btn type="success" color="secondary" prepend-icon="mdi-tray-arrow-up" class="ma-1" @click="exportCSV"> Export </v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -110,15 +109,6 @@
           v-model.trim="user.email"
           :rules="[rules.required, rules.validEmail]"
         ></v-text-field>
-        <v-text-field
-          density="compact"
-          type="number"
-          label="sede*"
-          variant="outlined"
-          color="secondary"
-          required
-          v-model.trim="user.headquarter"
-        ></v-text-field>
 
         <v-combobox
           density="compact"
@@ -128,7 +118,7 @@
           :items="optionPermissions"
           item-title="name"
           item-value="index"
-          label="Driver"
+          label="Permiso"
           :return-object="false"
         >
         </v-combobox>
@@ -149,8 +139,8 @@
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn text="Close" variant="plain" @click="userDialog = false"></v-btn>
-        <v-btn color="primary" text="Save" variant="tonal" @click="saveUser()"></v-btn>
+        <v-btn text="Cerrar" variant="plain" @click="userDialog = false"></v-btn>
+        <v-btn color="primary" text="Guardar" variant="tonal" @click="saveUser()"></v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -263,7 +253,6 @@ const resetPassword = async ({ item }: { item: any }) => {
   }
 };
 
-
 const saveUser = () => {
   const userResource = {
     username: user.value.username,
@@ -271,7 +260,7 @@ const saveUser = () => {
     lastName: user.value.lastName,
     email: user.value.email,
     dni: user.value.dni,
-    headquarter: user.value.headquarter,
+    headquarter: 0,
     permissions: user.value.permissions || [],
     isActive: user.value.isActive
   };
@@ -350,18 +339,14 @@ const headers = [
   { key: 'firstName', title: 'Nombre' },
   { key: 'lastName', title: 'Apellido' },
   { key: 'email', title: 'Correo' },
-  { key: 'headquarter', title: 'Sede' },
   { key: 'permissions', title: 'Permisos' },
   { key: 'isActive', title: 'Estado' },
   { key: 'actions', title: 'Acciones', sortable: false }
 ];
 const optionPermissions = [
-  { index: 0, name: 'Monitor', color: '#26A69A' },
-  { index: 1, name: 'Supervisor', color: '#00ACC1' },
-  { index: 2, name: 'Jefe', color: '#039BE5' },
-  { index: 3, name: 'Administrador', color: '#E57373' },
-  { index: 4, name: 'tester', color: '#BA68C8' },
-  { index: 5, name: 'Agente', color: '#1B5E20' }
+  { index: 0, name: 'Jefe', color: '#039BE5' },
+  { index: 1, name: 'Administrador', color: '#E57373' },
+  { index: 2, name: 'Agente', color: '#1B5E20' }
 ];
 
 function getPermission(indexToFind: number) {

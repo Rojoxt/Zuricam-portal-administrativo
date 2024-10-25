@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { ArrowDownLeftCircleIcon, ShoppingCartIcon, CircleArrowDownLeftIcon } from 'vue-tabler-icons';
+import { ref, computed, onMounted } from 'vue';
+import { CircleArrowDownLeftIcon } from 'vue-tabler-icons';
+import { UserService } from '@/user-management/services/user-service';
+import iconCard from '@/assets/images/icons/icon-card.svg';
+import { exportToExcel } from '@/core/utils/excelExporter';
 
 const tab = ref('1');
+const userService = new UserService();
+const totalUser = ref(0);
 
 const chartOptions1 = computed(() => {
   return {
@@ -41,7 +46,7 @@ const chartOptions1 = computed(() => {
       },
       y: {
         title: {
-          formatter: () => 'Total Order'
+          formatter: () => 'Total Usuarios'
         }
       },
       marker: {
@@ -61,63 +66,15 @@ const lineChart1 = {
   ]
 };
 
-// chart 2
-const chartOptions2 = computed(() => {
-  return {
-    chart: {
-      type: 'bar',
-      height: 90,
-      fontFamily: `inherit`,
-      foreColor: '#a1aab2',
-      sparkline: {
-        enabled: true
-      }
-    },
-    dataLabels: {
-      enabled: false
-    },
-    colors: ['#fff'],
-    fill: {
-      type: 'solid',
-      opacity: 1
-    },
-    stroke: {
-      curve: 'smooth',
-      width: 3
-    },
-    yaxis: {
-      min: 0,
-      max: 100
-    },
-    tooltip: {
-      theme: 'dark',
-      fixed: {
-        enabled: false
-      },
-      x: {
-        show: false
-      },
-      y: {
-        title: {
-          formatter: () => 'Total Order'
-        }
-      },
-      marker: {
-        show: false
-      }
-    }
-  };
+onMounted(() => {
+  getAllUsers();
 });
 
-// chart 1
-const lineChart2 = {
-  series: [
-    {
-      name: 'series1',
-      data: [35, 44, 9, 54, 45, 66, 41, 69]
-    }
-  ]
-};
+async function getAllUsers() {
+  const response = await userService.getAll();
+  totalUser.value = response.data.result.length;
+  console.log('Response data:', response.data.detail);
+}
 </script>
 
 <template>
@@ -125,12 +82,11 @@ const lineChart2 = {
     <v-card-text>
       <div class="d-flex align-start mb-3">
         <v-btn icon rounded="sm" color="darkprimary" variant="flat">
-          <ShoppingCartIcon stroke-width="1.5" width="20" />
+          <img :src="iconCard" width="25" />
         </v-btn>
         <div class="ml-auto z-1">
           <v-tabs v-model="tab" class="theme-tab" density="compact" end>
             <v-tab value="1" hide-slider color="transparent">Month</v-tab>
-            <v-tab value="2" hide-slider color="transparent">Year</v-tab>
           </v-tabs>
         </div>
       </div>
@@ -139,31 +95,15 @@ const lineChart2 = {
           <v-row>
             <v-col cols="6">
               <h2 class="text-h1 font-weight-medium">
-                $108
-                <a href="#">
+                {{ totalUser }}
+                <a>
                   <CircleArrowDownLeftIcon stroke-width="1.5" width="28" class="text-white" />
                 </a>
               </h2>
-              <span class="text-subtitle-1 text-medium-emphasis text-white">Total Order</span>
+              <span class="text-subtitle-1 text-medium-emphasis text-white">Total de Usuarios</span>
             </v-col>
             <v-col cols="6">
               <apexchart type="line" height="90" :options="chartOptions1" :series="lineChart1.series"> </apexchart>
-            </v-col>
-          </v-row>
-        </v-window-item>
-        <v-window-item value="2">
-          <v-row>
-            <v-col cols="6">
-              <h2 class="text-h1 font-weight-medium">
-                $961
-                <a href="#">
-                  <ArrowDownLeftCircleIcon stroke-width="1.5" width="28" class="text-white" />
-                </a>
-              </h2>
-              <span class="text-subtitle-1 text-medium-emphasis text-white">Total Order</span>
-            </v-col>
-            <v-col cols="6">
-              <apexchart type="line" height="90" :options="chartOptions2" :series="lineChart2.series"> </apexchart>
             </v-col>
           </v-row>
         </v-window-item>

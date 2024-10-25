@@ -9,8 +9,7 @@
           <v-col cols="auto"> </v-col>
           <v-spacer></v-spacer>
           <v-col cols="auto">
-            <v-btn type="success" color="secondary" prepend-icon="mdi-tray-arrow-up" class="ma-1">Import </v-btn>
-            <v-btn type="success" color="secondary200" prepend-icon="mdi-tray-arrow-up" class="ma-1" @click="exportCSV">Export </v-btn>
+            <v-btn type="success" color="secondary" prepend-icon="mdi-tray-arrow-up" class="ma-1" @click="exportCSV">Export </v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -71,15 +70,13 @@
           type="number"
           :rules="[(v) => /^\d{8}$/.test(v) || 'El DNI debe tener exactamente 8 números']"
         ></v-text-field>
-
-
         <small class="text-caption text-medium-emphasis">* obligatorio</small>
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn text="Close" variant="plain" @click="driverDialog = false"></v-btn>
-        <v-btn color="primary" text="Save" variant="tonal" @click="saveDriver({ driver: driver })"></v-btn>
+        <v-btn text="Cerrar" variant="plain" @click="driverDialog = false"></v-btn>
+        <v-btn color="primary" text="Guardar" variant="tonal" @click="saveDriver({ driver: driver })"></v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

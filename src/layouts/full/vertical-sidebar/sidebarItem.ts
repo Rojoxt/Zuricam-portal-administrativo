@@ -17,14 +17,14 @@ export interface menu {
 }
 
 const sidebarItem: menu[] = [
-  { header: 'Dashboard' },
+  { header: 'Panel' },
   {
-    title: 'Default',
+    title: 'Inicio',
     icon: DashboardIcon,
     to: '/dashboard/default'
   },
   { divider: true },
-  { header: 'Pages' },
+  { header: 'Gestión' },
   {
     title: 'Gestión de administradores',
     icon: UserPlusIcon,

@@ -9,8 +9,7 @@
           <v-col cols="auto"> </v-col>
           <v-spacer></v-spacer>
           <v-col cols="auto">
-            <v-btn type="success" color="secondary" prepend-icon="mdi-tray-arrow-up" class="ma-1">Import </v-btn>
-            <v-btn type="success" color="secondary200" prepend-icon="mdi-tray-arrow-up" class="ma-1" @click="exportCSV">Export </v-btn>
+            <v-btn type="success" color="secondary" prepend-icon="mdi-tray-arrow-up" class="ma-1" @click="exportCSV">Export </v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -73,8 +72,8 @@
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn text="Close" variant="plain" @click="unitDialog = false"></v-btn>
-        <v-btn color="primary" text="Save" variant="tonal" @click="saveUnit({ driver: unit })"></v-btn>
+        <v-btn text="Cerrar" variant="plain" @click="unitDialog = false"></v-btn>
+        <v-btn color="primary" text="Guardar" variant="tonal" @click="saveUnit({ driver: unit })"></v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -143,9 +142,6 @@ async function getAllUnits() {
 async function getAllDriver() {
   const response = await driverService.getAll();
   drivers.value = response.data.result;
-
-  console.log('Response data:', response.data.detail);
-  console.log('Response data:', drivers);
 }
 
 const openNew = () => {

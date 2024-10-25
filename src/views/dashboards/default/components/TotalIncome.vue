@@ -8,8 +8,8 @@
           <TableIcon stroke-width="1.5" width="25" />
         </v-btn>
         <div>
-          <h4 class="text-h4 font-weight-medium">$203k</h4>
-          <span class="text-subtitle-2 text-medium-emphasis text-white">Total Income</span>
+          <h4 class="text-h4 font-weight-medium">{{ totalDriver }}</h4>
+          <span class="text-subtitle-2 text-medium-emphasis text-white">Total de conductores</span>
         </div>
       </div>
     </v-card-text>
@@ -22,10 +22,31 @@
           <BuildingStoreIcon stroke-width="1.5" width="25" class="text-warning" />
         </v-btn>
         <div>
-          <h4 class="text-h4 font-weight-medium">$203k</h4>
-          <span class="text-subtitle-2 text-disabled font-weight-medium">Total Income</span>
+          <h4 class="text-h4 font-weight-medium">{{ totalCamera }}</h4>
+          <span class="text-subtitle-2 text-disabled font-weight-medium">Total de camaras</span>
         </div>
       </div>
     </v-card-text>
   </v-card>
 </template>
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import { DriverService } from '@/unit-management/services/driver-service';
+import { CameraService } from '@/camera-management/services/camera-service';
+
+const driverService = new DriverService();
+const cameraService = new CameraService();
+
+const totalDriver = ref(0);
+const totalCamera = ref(0);
+
+onMounted(() => {
+  getAllData();
+});
+async function getAllData() {
+  const response = await driverService.getAll();
+  const response2 = await cameraService.getAll();
+  totalDriver.value = response.data.result.length;
+  totalCamera.value = response2.data.result.length;
+}
+</script>
