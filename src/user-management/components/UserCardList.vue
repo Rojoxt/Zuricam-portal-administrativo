@@ -339,6 +339,7 @@ const headers = [
   { key: 'firstName', title: 'Nombre' },
   { key: 'lastName', title: 'Apellido' },
   { key: 'email', title: 'Correo' },
+  { key: 'dni', title: 'dni' },
   { key: 'permissions', title: 'Permisos' },
   { key: 'isActive', title: 'Estado' },
   { key: 'actions', title: 'Acciones', sortable: false }

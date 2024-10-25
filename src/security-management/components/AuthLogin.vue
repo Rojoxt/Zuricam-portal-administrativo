@@ -5,7 +5,6 @@ import { ref } from 'vue';
 import { useAuthStore } from '@/security-management/stores/auth-store';
 import { Form } from 'vee-validate';
 
-const checkbox = ref(false);
 const valid = ref(false);
 const show1 = ref(false);
 //const logform = ref();
@@ -35,6 +34,9 @@ function validate(values: any, { setErrors }: any) {
           break;
         case 'The account is deactivated':
           setErrors({ apiError: 'La cuenta está desactivada' });
+          break;
+        case 'No tienes permiso para acceder al portal administrativo.':
+          setErrors({ apiError: 'No tienes permiso para acceder al portal administrativo.' });
           break;
         default:
           setErrors({ apiError: 'Error desconocido' });
