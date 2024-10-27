@@ -1,116 +1,108 @@
-# Berry Free Vue Material UI Admin Template [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Get%20Berry%20React%20-%20The%20most%20beautiful%20Material%20designed%20Admin%20Dashboard%20Template%20&url=https://berrydashboard.io&via=codedthemes&hashtags=reactjs,webdev,developers,javascript)
+# Zuricam: Sistema de Monitoreo en Tiempo Real
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Price](https://img.shields.io/badge/price-FREE-0098f7.svg)](https://github.com/codedthemes/berry-free-vue-admin-template/blob/main/LICENSE)
+## Descripción del Proyecto
 
-Berry is a free Material UI admin dashboard template built with Vue. It is meant to provide the best possible User Experience with highly customizable feature-rich pages. It is a complete Dashboard Template that has easy and intuitive responsive design whether it is viewed on retina screens or laptops.
+**Zuricam** es un sistema de monitoreo basado en *Deep Learning* diseñado para la detección de asaltos armados en tiempo real. Este software proporciona una solución innovadora y eficaz para mejorar la seguridad pública mediante el uso de tecnologías avanzadas de visión por computadora.
 
-:star: :star: :star: Do not forget to star (Top right of this page) it if you like the theme :star: :star: :star:
+Este proyecto incluye un portal administrativo que permite la creación de usuarios y la gestión de permisos, así como la funcionalidad para exportar reportes de manera eficiente. Es un trabajo realizado como parte de la tesis de los estudiantes de la Universidad Peruana de Ciencias Aplicadas (UPC) en la carrera de Ingeniería de Software.
 
-![IMG_8566.jpg](https://berrydashboard.io/imp-images/berry-github-free-vue-repo.jpg)
+## Autores
 
-[Pro version](https://berrydashboard.io/vue) of Berry vue template contains features like TypeScript, Apps, Authentication Methods (i.e. JWT), Advance Components, Form Plugins, Layouts, Widgets, and many more.
+- **Máximo Mallqui**  
+  Correo: [u201416643@upc.edu.pe](mailto:u201416643@upc.edu.pe)
 
-| [Berry Free](https://berrydashboard.io/vue/free/) | [Berry](https://codedthemes.com/item/berry-vue-admin-dashboard/) |
-| --------------------------------------------- | :----------------------------------------------------------------------- |
-| **9** Demo pages                              | **45+** demo pages                                                       |
-| -                                             | ✓ Multi-language                                                         |
-| -                                             | ✓ Dark/Light Mode 🌓                                                     |
-| -                                             | ✓ TypeScript version                                                     |
-| -                                             | ✓ Design files (Figma)                                                   |
-| -                                             | ✓ 6+ color Options                                                       |
-| -                                             | ✓ RTL                                                                    |
-| -                                             | ✓ JWT authentications                                   |
-| -                                             | ✓ [More components](https://berrydashboard.io/vue/dashboard/default)         |
+- **De La Mar Zurita**  
+  Correo: [u201521128@upc.edu.pe](mailto:u201521128@upc.edu.pe)
 
-## Why Berry?
+## Objetivos
 
-Berry offers everything you need to create dashboards. We have included the following high-end features in our initial release:
+### Objetivo General
 
--   Modern aesthetics UI design
--   Vuetify components
--   Fully Responsive, all modern browser supported
--   Easy to use code structure
--   Flexible & High-Performance code
--   Easy Documentation Guide
+Desarrollar un sistema de monitoreo en tiempo real que utilice *Deep Learning* para detectar asaltos armados y proporcionar una interfaz administrativa para la gestión de usuarios y reportes.
 
-## Free Berry Vue version
+### Objetivos Específicos
 
--   [Preview](https://berrydashboard.io/vue/free/)
--   [Download from Github](https://github.com/codedthemes/berry-free-vue-admin-template)
+1. Implementar un modelo de *Deep Learning* para la detección de armas en imágenes de video.
+2. Crear un portal administrativo donde se puedan gestionar usuarios y permisos.
+3. Desarrollar funcionalidades para la generación y exportación de reportes de incidentes.
+4. Proporcionar una interfaz de usuario intuitiva y fácil de usar.
 
-## Berry Pro version
+## Tecnologías Utilizadas
 
--   [Preview](https://berrydashboard.io/vue)
--   [Purchase from Store](https://codedthemes.com/item/berry-vue-admin-dashboard/)
+- **Lenguajes de Programación**: Python, JavaScript
+- **Frameworks**:
+    - FastAPI (backend)
+    - Vue.js (frontend)
+    - Vuetify (componentes UI)
+- **Bibliotecas de Deep Learning**: YOLOv8
+- **Base de Datos**: PostgreSQL
+- **Otros**: Docker, Vercel (despliegue)
 
-## Table of contents
+## Instalación
 
--   [Getting Started](#getting-started)
--   [Documentation](#documentation)
--   [Technology Stack](#technology-stack)
--   [Author](#author)
--   [Issues?](#issues)
--   [License](#license)
--   [More Products](#more-free-react-material-admin-templates)
--   [Follow us](#follow-us)
+### Requisitos Previos
 
-## Getting Started
+Asegúrate de tener instalados los siguientes elementos antes de comenzar:
 
-Clone from Github
+- [Node.js](https://nodejs.org/) (versión recomendada: 14 o superior)
+- [Python](https://www.python.org/downloads/) (versión recomendada: 3.7 o superior)
+- [PostgreSQL](https://www.postgresql.org/download/)
+- [Docker](https://www.docker.com/get-started)
 
-```
-git clone https://github.com/codedthemes/berry-free-vue-admin-template.git
+### Clonación del Repositorio
+
+```bash
+git clone https://github.com/tu_usuario/zuricam.git
+cd zuricam
 ```
 
-## Documentation
+### Instalación del Backend
 
-[Berry documentation](https://codedthemes.gitbook.io/berry/) helps you with installation, deployment, and troubleshooting.
+```bash
+cd backend
+pip install -r requirements.txt
+```
 
-## Technology Stack
+### Instalación del Frontend
 
--   [Vuetify 3](https://vuetifyjs.com/)
--   Vite
--   Vue3
+```bash
+cd frontend
+npm install
+```
 
-## Author
+### Configuración de la Base de Datos
+1. Crea una base de datos en PostgreSQL.
+2. Configura las variables de entorno en el archivo .env según tus credenciales.
 
-Berry is developed by Team [CodedThemes](https://codedthemes.com).
+## Ejecución del Proyecto
 
-## Issues
+### Frontend
 
-To report a bug, please submit an [issue](https://github.com/codedthemes/berry-free-vue-admin-template/issues) on Github. We will respond as soon as possible to resolve the issue.
+```bash
+cd frontend
+npm run serve
+```
 
-## License
+## Uso
 
--   Licensed cover under [MIT](https://github.com/codedthemes/datta-able-bootstrap-dashboard/blob/master/LICENSE)
+1. Accede al portal administrativo a través de  http://localhost:5173/ (o el puerto que hayas configurado).
+2. Registra nuevos usuarios y asigna permisos.
+3. Utiliza la función de detección en tiempo real para monitorizar posibles asaltos armados.
+4. Genera y exporta reportes de incidentes en formatos compatibles.
 
-## Berry Free - Other Technologies
+## Contribuciones
 
-- [React](https://codedthemes.com/item/berry-mui-free-react-admin-template/)
-- [Bootstrap](https://codedthemes.com/item/berry-bootstrap-free-admin-template/)
-- [Angular](https://codedthemes.com/item/berry-angular-free-admin-template/)
+Las contribuciones son bienvenidas. Si deseas colaborar en este proyecto, por favor sigue los siguientes pasos:
 
-## Berry Pro - Other Technologies
+1. Realiza un fork del repositorio.
+2. Crea una nueva rama (git checkout -b feature/nueva-caracteristica).
+3. Realiza tus cambios y haz un commit (git commit -m 'Añadir nueva característica').
+4. Envía un push a la rama (git push origin feature/nueva-caracteristica).
+5. Abre un Pull Request.
 
-- [React](https://codedthemes.com/item/berry-material-react-admin-template/)
-- [Bootstrap](https://codedthemes.com/item/berry-bootstrap-5-admin-template/)
-- [Angular](https://codedthemes.com/item/berry-angular-admin-dashboard-template/)
-- [.Net](https://codedthemes.com/item/berry-dotnet-bootstrap-dashboard-template/)
-- [CodeIgnitor](https://codedthemes.com/item/berry-codeigniter-admin-template/)
-- [Django](https://codedthemes.com/item/berry-django-react-admin-template/)
-- [NodeJS](https://codedthemes.com/item/berry-react-node-js-admin-template/)
+### Licencia
 
-## More Premium Vue Material Admin Templates
+Este proyecto está bajo la MIT License.
 
-- [Mantis](https://codedthemes.com/item/mantis-vue-admin-template/)
-- [Able Pro](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiDpKWU6c-EAxWb1DgGHZrqBlwQFnoECBUQAQ&url=https%3A%2F%2Fthemeforest.net%2Fitem%2Fable-pro-vuejs-admin-dashboard-template%2F50804253&usg=AOvVaw1wWW-BC8ltIxIs-Rb1Mu8C&opi=89978449)
-
-## Follow us
-
--   [Website](https://berrydashboard.io)
--   [Blog](https://blog.berrydashboard.io)
--   [CodedThemes](https://codedthemes.com)
--   [Dribbble](https://dribbble.com/codedthemes)
--   [Facebook](https://www.facebook.com/codedthemes)
--   [Twitter](https://twitter.com/codedthemes)
+## Contacto
+Para más información o preguntas, puedes contactar a los autores a través de sus correos electrónicos.
