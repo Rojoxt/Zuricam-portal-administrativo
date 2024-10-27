@@ -22,26 +22,7 @@ function validate(values: any, { setErrors }: any) {
 
   return authStore.login({ email: username.value, password: password.value }).catch((error) => {
     if (error.response) {
-      // console.error('Error response data:', error.response.data);
-
-      // Verifica la respuesta del error y traduce los mensajes
-      switch (error.response.data.detail) {
-        case 'Email not registered':
-          setErrors({ apiError: 'Correo no existe' });
-          break;
-        case 'Password or email incorrect':
-          setErrors({ apiError: 'Correo o contraseña incorrecta' });
-          break;
-        case 'The account is deactivated':
-          setErrors({ apiError: 'La cuenta está desactivada' });
-          break;
-        case 'No tienes permiso para acceder al portal administrativo.':
-          setErrors({ apiError: 'No tienes permiso para acceder al portal administrativo.' });
-          break;
-        default:
-          setErrors({ apiError: 'Error desconocido' });
-          break;
-      }
+      setErrors({ apiError: error.response.data.detail });
     } else {
       console.error('Error sin respuesta de servidor:', error);
       setErrors({ apiError: 'Error de conexión con el servidor' });

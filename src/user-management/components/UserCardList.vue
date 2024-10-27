@@ -9,7 +9,7 @@
           <v-col cols="auto"></v-col>
           <v-spacer></v-spacer>
           <v-col cols="auto">
-            <v-btn type="success" color="secondary" prepend-icon="mdi-tray-arrow-up" class="ma-1" @click="exportCSV"> Export </v-btn>
+            <v-btn type="success" text="Export" color="secondary" prepend-icon="mdi-tray-arrow-up" class="ma-1" @click="exportCSV"></v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -62,87 +62,92 @@
   </v-card>
 
   <v-dialog v-model="userDialog" max-width="500">
-    <v-card prepend-icon="mdi-account" title="Perfil de usuario">
-      <v-card-text>
-        <v-text-field
-          density="compact"
-          label="Usuario*"
-          variant="outlined"
-          color="secondary"
-          required
-          v-model.trim="user.username"
-        ></v-text-field>
-        <v-text-field
-          density="compact"
-          label="Nombres*"
-          variant="outlined"
-          color="secondary"
-          required
-          v-model.trim="user.firstName"
-        ></v-text-field>
-        <v-text-field
-          density="compact"
-          label="Apellidos*"
-          variant="outlined"
-          color="secondary"
-          required
-          v-model.trim="user.lastName"
-        ></v-text-field>
-        <v-text-field
-          density="compact"
-          type="number"
-          label="Dni*"
-          variant="outlined"
-          color="secondary"
-          required
-          v-model.trim="user.dni"
-          :rules="[rules.required, rules.dniLength]"
-        ></v-text-field>
-        <v-text-field
-          density="compact"
-          placeholder="correo@gmail.com"
-          type="email"
-          label="Correo*"
-          variant="outlined"
-          color="secondary"
-          required
-          v-model.trim="user.email"
-          :rules="[rules.required, rules.validEmail]"
-        ></v-text-field>
+    <Form @submit="validate" class="mt-7 loginForm" v-slot="{ errors, isSubmitting }">
+      <v-card prepend-icon="mdi-account" title="Perfil de usuario">
+        <v-card-text>
+          <v-text-field
+            density="compact"
+            label="Usuario*"
+            variant="outlined"
+            color="secondary"
+            required
+            v-model.trim="user.username"
+          ></v-text-field>
+          <v-text-field
+            density="compact"
+            label="Nombres*"
+            variant="outlined"
+            color="secondary"
+            required
+            v-model.trim="user.firstName"
+          ></v-text-field>
+          <v-text-field
+            density="compact"
+            label="Apellidos*"
+            variant="outlined"
+            color="secondary"
+            required
+            v-model.trim="user.lastName"
+          ></v-text-field>
+          <v-text-field
+            density="compact"
+            type="number"
+            label="Dni*"
+            variant="outlined"
+            color="secondary"
+            required
+            v-model.trim="user.dni"
+            :rules="[rules.required, rules.dniLength]"
+          ></v-text-field>
+          <v-text-field
+            density="compact"
+            placeholder="correo@gmail.com"
+            type="email"
+            label="Correo*"
+            variant="outlined"
+            color="secondary"
+            required
+            v-model.trim="user.email"
+            :rules="[rules.required, rules.validEmail]"
+          ></v-text-field>
 
-        <v-combobox
-          density="compact"
-          variant="outlined"
-          color="secondary"
-          v-model="user.permissions[0]"
-          :items="optionPermissions"
-          item-title="name"
-          item-value="index"
-          label="Permiso"
-          :return-object="false"
-        >
-        </v-combobox>
+          <v-combobox
+            density="compact"
+            variant="outlined"
+            color="secondary"
+            v-model="user.permissions[0]"
+            :items="optionPermissions"
+            item-title="name"
+            item-value="index"
+            label="Permiso"
+            :return-object="false"
+          >
+          </v-combobox>
 
-        <v-row justify="center">
-          <!-- Centra los botones -->
-          <v-btn-toggle v-model="toggleActive" mandatory shaped color="success">
-            <v-btn value="true"> Activado </v-btn>
+          <v-row justify="center">
+            <!-- Centra los botones -->
+            <v-btn-toggle v-model="toggleActive" mandatory shaped color="success">
+              <v-btn value="true"> Activado</v-btn>
 
-            <v-btn value="false" color="error"> Desactivado </v-btn>
-          </v-btn-toggle>
-        </v-row>
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
+              <v-btn value="false" color="error"> Desactivado</v-btn>
+            </v-btn-toggle>
+          </v-row>
+          <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
 
-        <small class="text-caption text-medium-emphasis">*Obligatorio</small>
-      </v-card-text>
-      <v-divider></v-divider>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn text="Cerrar" variant="plain" @click="userDialog = false"></v-btn>
-        <v-btn color="primary" text="Guardar" variant="tonal" @click="saveUser()"></v-btn>
-      </v-card-actions>
-    </v-card>
+          <small class="text-caption text-medium-emphasis">*Obligatorio</small>
+        </v-card-text>
+        <v-divider></v-divider>
+        <div v-if="errors.apiError" class="mt-2">
+          <v-alert color="error">{{ errors.apiError }}</v-alert>
+        </div>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text="Cerrar" variant="plain" @click="userDialog = false"></v-btn>
+          <v-btn color="primary" :loading="isSubmitting" class="mt-2" variant="tonal" :disabled="valid" type="submit"> Guardar </v-btn>
+        </v-card-actions>
+      </v-card>
+    </Form>
   </v-dialog>
 
   <v-dialog v-model="deleteUserDialog" max-width="400">
@@ -169,6 +174,7 @@
 import { computed, onMounted, ref } from 'vue';
 import { UserService } from '@/user-management/services/user-service';
 import { exportToExcel } from '@/core/utils/excelExporter';
+import { Form } from 'vee-validate';
 
 const search = ref('');
 const userService = new UserService();
@@ -184,8 +190,9 @@ const newUser: CreateUserModel = {
   username: '',
   isActive: true
 };
+const userResource = ref<CreateUserModel | null>(null);
 const user = ref<CreateUserModel & { id?: number }>(newUser);
-
+const valid = ref(false);
 const toggleActive = computed({
   get: () => (user.value.isActive ? 'true' : 'false'), // Devuelve como string
   set: (value) => {
@@ -193,9 +200,9 @@ const toggleActive = computed({
   }
 });
 const rules = {
-  required: (value) => !!value || 'Este campo es requerido.',
-  dniLength: (value) => (value && value.toString().length === 8) || 'El DNI debe tener exactamente 8 dígitos.',
-  validEmail: (value) => {
+  required: (value: string) => !!value || 'Este campo es requerido.',
+  dniLength: (value: number) => (value && value.toString().length === 8) || 'El DNI debe tener exactamente 8 dígitos.',
+  validEmail: (value: string) => {
     const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return pattern.test(value) || 'Ingrese un correo válido.';
   }
@@ -253,59 +260,6 @@ const resetPassword = async ({ item }: { item: any }) => {
   }
 };
 
-const saveUser = () => {
-  const userResource = {
-    username: user.value.username,
-    firstName: user.value.firstName,
-    lastName: user.value.lastName,
-    email: user.value.email,
-    dni: user.value.dni,
-    headquarter: 0,
-    permissions: user.value.permissions || [],
-    isActive: user.value.isActive
-  };
-
-  if (user.value.username && user.value.firstName && user.value.lastName) {
-    if (user.value.id) {
-      userService.update(user.value.id, userResource).then((response) => {
-        addToast('Success', `${response.data.detail}`, 'success');
-        getAllUser();
-      });
-    } else {
-      // new unit
-      userService
-        .create(userResource)
-        .then((response) => {
-          addToast('Success', `${response.data.detail}`, 'success');
-          getAllUser();
-        })
-        .catch((error) => {
-          handleRequestError(error);
-        });
-    }
-    userDialog.value = false;
-    user.value = { ...newUser }; // Reinicia el objeto user
-  } else {
-    addToast('Error', 'Faltan datos', 'error');
-  }
-};
-
-function handleRequestError(error: any): void {
-  if (error.response) {
-    // Verificar si es un error 400
-    if (error.response.status === 400) {
-      // Mostrar el mensaje de error específico
-      addToast('Error', `${error.response.data.detail}`, 'error');
-    } else {
-      // Manejar otros errores (500, 404, etc.)
-      addToast('Error', 'Ha ocurrido un error en el servidor.', 'error');
-    }
-  } else {
-    // Error de red o de otra índole
-    addToast('Error', 'Error de red. Intenta de nuevo.', 'error');
-  }
-}
-
 function addToast(title: string, message: string, color: string): void {
   snackbarTitle.value = title;
   snackbarMessage.value = message;
@@ -353,6 +307,63 @@ const optionPermissions = [
 function getPermission(indexToFind: number) {
   const option = optionPermissions.find((option) => option.index === indexToFind);
   return option ? { ...option } : null; // Retorna una copia del objeto si lo encuentra, o null si no lo encuentra
+}
+
+function validate(values: any, { setErrors }: any) {
+  userResource.value = {
+    username: user.value.username,
+    firstName: user.value.firstName,
+    lastName: user.value.lastName,
+    email: user.value.email,
+    dni: user.value.dni,
+    headquarter: '0',
+    permissions: user.value.permissions || [],
+    isActive: user.value.isActive
+  };
+
+  if (user.value.username && user.value.firstName && user.value.lastName) {
+    if (user.value.id) {
+      console.log('usuario actualizar:');
+      return userService
+        .update(user.value.id, userResource.value)
+        .then((response) => {
+          addToast('Success', `${response.data.detail}`, 'success');
+          getAllUser();
+          // Mover estas líneas aquí
+          userDialog.value = false; // Ahora solo se ejecutará después de una actualización exitosa
+          user.value = { ...newUser }; // Ahora solo se ejecutará después de una actualización exitosa
+        })
+        .catch((error) => {
+          if (error.response) {
+            setErrors({ apiError: error.response.data.detail });
+          } else {
+            console.error('Error sin respuesta de servidor:', error);
+            setErrors({ apiError: 'Error de conexión con el servidor' });
+          }
+        });
+    } else {
+      // nuevo usuario
+      return userService
+        .create(userResource.value)
+        .then((response) => {
+          addToast('Success', `${response.data.detail}`, 'success');
+          getAllUser();
+          // Mover estas líneas aquí
+          userDialog.value = false; // Ahora solo se ejecutará después de una creación exitosa
+          user.value = { ...newUser }; // Ahora solo se ejecutará después de una creación exitosa
+        })
+        .catch((error) => {
+          if (error.response) {
+            setErrors({ apiError: error.response.data.detail });
+          } else {
+            console.error('Error sin respuesta de servidor:', error);
+            setErrors({ apiError: 'Error de conexión con el servidor' });
+          }
+        });
+    }
+  } else {
+    setErrors({ apiError: 'Error: faltan datos' });
+  }
 }
 </script>
 
