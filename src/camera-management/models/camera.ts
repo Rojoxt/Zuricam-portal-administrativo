@@ -1,7 +1,7 @@
 interface CreateCameraModel {
-  name?: string;
-  location?: string;
-  url?: string;
+  name: string;
+  location: string;
+  url: string;
   unitId: number;
 }
 

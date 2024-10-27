@@ -139,7 +139,7 @@
         </v-card-text>
         <v-divider></v-divider>
         <div v-if="errors.apiError" class="mt-2">
-          <v-alert color="error">{{ errors.apiError }}</v-alert>
+          <v-alert color="error" variant="tonal">{{ errors.apiError }}</v-alert>
         </div>
         <v-card-actions>
           <v-spacer></v-spacer>

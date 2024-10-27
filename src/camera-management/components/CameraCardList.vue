@@ -4,12 +4,12 @@
       <v-container>
         <v-row align="center" justify="center">
           <v-col cols="auto">
-            <v-btn type="success" color="success" prepend-icon="mdi-plus" class="ma-1" @click="openNew">Añadir </v-btn>
+            <v-btn type="success" color="success" prepend-icon="mdi-plus" class="ma-1" @click="openNew">Añadir</v-btn>
           </v-col>
-          <v-col cols="auto"> </v-col>
+          <v-col cols="auto"></v-col>
           <v-spacer></v-spacer>
           <v-col cols="auto">
-            <v-btn type="success" color="secondary" prepend-icon="mdi-tray-arrow-up" class="ma-1" @click="exportCSV">Export </v-btn>
+            <v-btn type="success" color="secondary" prepend-icon="mdi-tray-arrow-up" class="ma-1" @click="exportCSV"> Export </v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -44,54 +44,59 @@
   </v-card>
 
   <v-dialog v-model="cameraDialog" max-width="500">
-    <v-card prepend-icon="mdi-account" title="Perfil de camara">
-      <v-card-text>
-        <v-text-field
-          density="compact"
-          label="Nombre*"
-          variant="outlined"
-          color="secondary"
-          required
-          v-model.trim="camera.name"
-        ></v-text-field>
-        <v-text-field
-          density="compact"
-          v-model.trim="camera.location"
-          label="Ubicación*"
-          variant="outlined"
-          color="secondary"
-          required
-        ></v-text-field>
-        <v-combobox
-          density="compact"
-          variant="outlined"
-          color="secondary"
-          v-model="camera.unitId"
-          :items="units"
-          item-title="carPlate"
-          item-value="id"
-          label="Bus"
-          :return-object="false"
-          required
-        >
-        </v-combobox>
-        <v-text-field
-          density="compact"
-          v-model.trim="camera.url"
-          label="Url*"
-          variant="outlined"
-          color="secondary"
-          required
-        ></v-text-field>
-        <small class="text-caption text-medium-emphasis">* obligatorio</small>
-      </v-card-text>
-      <v-divider></v-divider>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn text="Cerrar" variant="plain" @click="cameraDialog = false"></v-btn>
-        <v-btn color="primary" text="Guardar" variant="tonal" @click="saveCamera({ camera: camera })"></v-btn>
-      </v-card-actions>
-    </v-card>
+    <Form @submit="handleSubmit" class="mt-7 loginForm" v-slot="{ errors, isSubmitting }">
+      <v-card prepend-icon="mdi-account" title="Perfil de camara">
+        <v-card-text>
+          <v-text-field
+            density="compact"
+            label="Nombre*"
+            variant="outlined"
+            color="secondary"
+            required
+            v-model.trim="camera.name"
+          ></v-text-field>
+          <v-text-field
+            density="compact"
+            v-model.trim="camera.location"
+            label="Ubicación*"
+            variant="outlined"
+            color="secondary"
+            required
+          ></v-text-field>
+          <v-combobox
+            density="compact"
+            variant="outlined"
+            color="secondary"
+            v-model="camera.unitId"
+            :items="units"
+            item-title="carPlate"
+            item-value="id"
+            label="Bus"
+            :return-object="false"
+            required
+          >
+          </v-combobox>
+          <v-text-field
+            density="compact"
+            v-model.trim="camera.url"
+            label="Url*"
+            variant="outlined"
+            color="secondary"
+            required
+          ></v-text-field>
+          <small class="text-caption text-medium-emphasis">* obligatorio</small>
+        </v-card-text>
+        <v-divider></v-divider>
+        <div v-if="errors.apiError" class="mt-2">
+          <v-alert color="error" variant="tonal">{{ errors.apiError }}</v-alert>
+        </div>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text="Cerrar" variant="plain" @click="cameraDialog = false"></v-btn>
+          <v-btn color="primary" :loading="isSubmitting" class="mt-2" variant="tonal" :disabled="valid" type="submit"> Guardar </v-btn>
+        </v-card-actions>
+      </v-card>
+    </Form>
   </v-dialog>
 
   <v-dialog v-model="deleteCameraDialog" max-width="400">
@@ -119,21 +124,44 @@ import { onMounted, ref } from 'vue';
 import { exportToExcel } from '@/core/utils/excelExporter';
 import { CameraService } from '@/camera-management/services/camera-service';
 import { UnitService } from '@/unit-management/services/unit-service';
+import { validate } from '@/core/validators/validators';
+import { Form } from 'vee-validate';
 
 const search = ref('');
 const cameraService = new CameraService();
 const unitService = new UnitService();
 const cameraDialog = ref(false);
 const deleteCameraDialog = ref(false);
-const camera = ref<Partial<CameraModel>>({});
+const newCamera: CreateCameraModel = {
+  name: '',
+  location: '',
+  url: '',
+  unitId: 1
+};
+const camera = ref<CreateCameraModel & { id?: number }>(newCamera);
 const cameras = ref<CameraModel[]>([]);
 const units = ref<UnitModel[]>([]);
-
+const valid = ref(false);
+//const cameraResource = ref<CreateCameraModel | null>(null);
 //configuration snackbars
 const snackbar = ref(false);
 const snackbarMessage = ref('');
 const snackbarColor = ref('');
 const snackbarTitle = ref('');
+const cameraResource = ref<CreateCameraModel | null>(null);
+
+const closeDialog = () => {
+  cameraDialog.value = false;
+};
+const handleSubmit = async (values: any, { setErrors }: any) => {
+  cameraResource.value = {
+    name: camera.value.name,
+    location: camera.value.location,
+    url: camera.value.url,
+    unitId: camera.value.unitId
+  };
+  await validate(cameraService, camera, cameraResource, setErrors, addToast, closeDialog, getAllCameras);
+};
 
 onMounted(() => {
   getAllCameras();
@@ -143,6 +171,7 @@ onMounted(() => {
 const exportCSV = () => {
   exportToExcel(cameras.value);
 };
+
 async function getAllUnits() {
   const response = await unitService.getAll();
   units.value = response.data.result;
@@ -156,7 +185,7 @@ async function getAllCameras() {
 }
 
 const openNew = () => {
-  camera.value = {};
+  camera.value = { ...newCamera };
   cameraDialog.value = true;
 };
 
@@ -164,35 +193,11 @@ const editCamera = ({ item }: { item: any }) => {
   camera.value = { ...item };
   cameraDialog.value = true;
 };
+
 function getCarPlateUnit(unitId: number) {
   const unit = units.value.find((unit) => unit.id === unitId);
   return unit ? `${unit.carPlate} ` : 'Unit not found';
 }
-const saveCamera = ({ camera }: { camera: any }) => {
-  const cameraResource = {
-    name: camera.name,
-    location: camera.location,
-    unitId: camera.unitId,
-    url: camera.url
-  };
-
-  if (camera.name && camera.name.trim() && camera.location && camera.unitId) {
-    if (camera.id) {
-      cameraService.update(camera.id, cameraResource).then((response) => {
-        addToast('Success', `${response.data.detail}`, 'success');
-        getAllCameras();
-      });
-    } else {
-      //new camera
-      cameraService.create(camera).then((response) => {
-        addToast('Success', `${response.data.detail}`, 'success');
-        getAllCameras();
-      });
-    }
-    cameraDialog.value = false;
-    camera.value = {};
-  } else addToast('Error', 'Faltan datos', 'error');
-};
 
 function addToast(title: string, message: string, color: string): void {
   snackbarTitle.value = title;
@@ -218,7 +223,7 @@ const deleteCamera = () => {
     addToast('Success', `${response.data.detail}`, 'success');
     getAllCameras();
   });
-  camera.value = {};
+  camera.value = { ...newCamera };
   deleteCameraDialog.value = false;
 };
 

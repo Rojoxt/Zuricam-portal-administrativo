@@ -1,4 +1,4 @@
-import { BugIcon, DashboardIcon, IdIcon, CameraPlusIcon, UserPlusIcon, CarIcon, FileReportIcon } from 'vue-tabler-icons';
+import { DashboardIcon, IdIcon, CameraPlusIcon, UserPlusIcon, CarIcon, FileReportIcon } from 'vue-tabler-icons';
 
 export interface menu {
   header?: string;
@@ -49,11 +49,6 @@ const sidebarItem: menu[] = [
     title: 'Gestión de Reporte',
     icon: FileReportIcon,
     to: { name: 'ReportManagement' }
-  },
-  {
-    title: 'Error 404',
-    icon: BugIcon,
-    to: '/pages/error'
   },
   { divider: true }
 ];

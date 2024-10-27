@@ -4,12 +4,12 @@
       <v-container>
         <v-row align="center" justify="center">
           <v-col cols="auto">
-            <v-btn type="success" color="success" prepend-icon="mdi-plus" class="ma-1" @click="openNew">Añadir </v-btn>
+            <v-btn type="success" color="success" prepend-icon="mdi-plus" class="ma-1" @click="openNew">Añadir</v-btn>
           </v-col>
-          <v-col cols="auto"> </v-col>
+          <v-col cols="auto"></v-col>
           <v-spacer></v-spacer>
           <v-col cols="auto">
-            <v-btn type="success" color="secondary" prepend-icon="mdi-tray-arrow-up" class="ma-1" @click="exportCSV">Export </v-btn>
+            <v-btn type="success" color="secondary" prepend-icon="mdi-tray-arrow-up" class="ma-1" @click="exportCSV"> Export </v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -44,38 +44,43 @@
   </v-card>
 
   <v-dialog v-model="unitDialog" max-width="500">
-    <v-card prepend-icon="mdi-account" title="Perfil de bus">
-      <v-card-text>
-        <v-text-field
-          density="compact"
-          label="Placa*"
-          variant="outlined"
-          color="secondary"
-          required
-          v-model.trim="unit.carPlate"
-        ></v-text-field>
-        <v-combobox
-          density="compact"
-          variant="outlined"
-          color="secondary"
-          v-model="unit.driverId"
-          :items="drivers"
-          item-title="name"
-          item-value="id"
-          label="Driver"
-          :return-object="false"
-          required
-        >
-        </v-combobox>
-        <small class="text-caption text-medium-emphasis">* obligatorio</small>
-      </v-card-text>
-      <v-divider></v-divider>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn text="Cerrar" variant="plain" @click="unitDialog = false"></v-btn>
-        <v-btn color="primary" text="Guardar" variant="tonal" @click="saveUnit({ driver: unit })"></v-btn>
-      </v-card-actions>
-    </v-card>
+    <Form @submit="validate" class="mt-7 loginForm" v-slot="{ errors, isSubmitting }">
+      <v-card prepend-icon="mdi-account" title="Perfil de bus">
+        <v-card-text>
+          <v-text-field
+            density="compact"
+            label="Placa*"
+            variant="outlined"
+            color="secondary"
+            required
+            v-model.trim="unit.carPlate"
+          ></v-text-field>
+          <v-combobox
+            density="compact"
+            variant="outlined"
+            color="secondary"
+            v-model="unit.driverId"
+            :items="drivers"
+            item-title="name"
+            item-value="id"
+            label="Driver"
+            :return-object="false"
+            required
+          >
+          </v-combobox>
+          <small class="text-caption text-medium-emphasis">* obligatorio</small>
+        </v-card-text>
+        <v-divider></v-divider>
+        <div v-if="errors.apiError" class="mt-2">
+          <v-alert color="error" variant="tonal">{{ errors.apiError }}</v-alert>
+        </div>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text="Cerrar" variant="plain" @click="unitDialog = false"></v-btn>
+          <v-btn color="primary" :loading="isSubmitting" class="mt-2" variant="tonal" :disabled="valid" type="submit"> Guardar </v-btn>
+        </v-card-actions>
+      </v-card>
+    </Form>
   </v-dialog>
 
   <v-dialog v-model="deleteUnitDialog" max-width="400">
@@ -99,10 +104,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, type UnwrapRef, watch } from 'vue';
+import { onMounted, ref } from 'vue';
 import { UnitService } from '@/unit-management/services/unit-service';
 import { exportToExcel } from '@/core/utils/excelExporter';
 import { DriverService } from '@/unit-management/services/driver-service';
+import { Form } from 'vee-validate';
 
 const search = ref('');
 const unitService = new UnitService();
@@ -112,7 +118,8 @@ const deleteUnitDialog = ref(false);
 const unit = ref<Partial<UnitModel>>({});
 const units = ref<UnitModel[]>([]);
 const drivers = ref<DriverModel[]>([]);
-
+const valid = ref(false);
+const unitResource = ref<CreateUnitModel | null>(null);
 //configuration snackbars
 const snackbar = ref(false);
 const snackbarMessage = ref('');
@@ -127,6 +134,51 @@ onMounted(() => {
 const exportCSV = () => {
   exportToExcel(units.value);
 };
+
+function validate(values: any, { setErrors }: any) {
+  unitResource.value = {
+    carPlate: unit.value.carPlate,
+    driverId: unit.value.driverId
+  };
+  if (unit.value.carPlate && unit.value.driverId) {
+    if (unit.value.id) {
+      return unitService
+        .update(unit.value.id, unitResource.value)
+        .then((response) => {
+          addToast('Success', `${response.data.detail}`, 'success');
+          getAllUnits();
+          unitDialog.value = false;
+          unit.value = {};
+        })
+        .catch((error) => {
+          if (error.response) {
+            setErrors({ apiError: error.response.data.detail });
+          } else {
+            console.error('Error sin respuesta de servidor:', error);
+            setErrors({ apiError: 'Error de conexión con el servidor' });
+          }
+        });
+    } else {
+      //new unit
+      return unitService
+        .create(unitResource.value)
+        .then((response) => {
+          addToast('Success', `${response.data.detail}`, 'success');
+          getAllUnits();
+          unitDialog.value = false;
+          unit.value = {};
+        })
+        .catch((error) => {
+          if (error.response) {
+            setErrors({ apiError: error.response.data.detail });
+          } else {
+            console.error('Error sin respuesta de servidor:', error);
+            setErrors({ apiError: 'Error de conexión con el servidor' });
+          }
+        });
+    }
+  } else setErrors({ apiError: 'Error: faltan datos' });
+}
 
 function getNameDriver(driverId: number) {
   const driver = drivers.value.find((driver) => driver.id === driverId);
@@ -152,31 +204,6 @@ const openNew = () => {
 const editUnit = ({ item }: { item: any }) => {
   unit.value = { ...item };
   unitDialog.value = true;
-};
-const saveUnit = (p: { driver: UnwrapRef<CreateUnitModel> }) => {
-  const unitResource = {
-    carPlate: unit.value.carPlate,
-    driverId: unit.value.driverId
-  };
-
-  if (unit.value.carPlate && unit.value.carPlate.trim() && unit.value.driverId) {
-    if (unit.value.id) {
-      unitService.update(unit.value.id, unitResource).then((response) => {
-        addToast('Success', `${response.data.detail}`, 'success');
-        getAllUnits();
-      });
-    } else {
-      // new unit
-      unitService.create(unitResource).then((response) => {
-        addToast('Success', `${response.data.detail}`, 'success');
-        getAllUnits();
-      });
-    }
-    unitDialog.value = false;
-    unit.value = {}; // Reinicia el objeto unit
-  } else {
-    addToast('Error', 'Faltan datos', 'error');
-  }
 };
 
 function addToast(title: string, message: string, color: string): void {
