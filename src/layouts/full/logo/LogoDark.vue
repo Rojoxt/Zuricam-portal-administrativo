@@ -1,6 +1,6 @@
 <template>
   <div class="logo">
-    <RouterLink to="/">
+
       <svg width="110" height="32" viewBox="0 0 110 32" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M36 27 H 250" id="zuricamPath" fill="transparent" />
         <text font-family="Roboto" font-size="16" font-weight="bold" fill="black">
@@ -22,7 +22,7 @@
         <!-- Parte superior de la cámara -->
         <rect x="14" y="8" width="4" height="2" :fill="secondary" />
       </svg>
-    </RouterLink>
+
   </div>
 </template>
 <script setup lang="ts">
