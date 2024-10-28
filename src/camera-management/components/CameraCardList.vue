@@ -8,15 +8,12 @@
           </v-col>
           <v-col cols="auto"></v-col>
           <v-spacer></v-spacer>
-          <v-col cols="auto">
-            <v-btn type="success" color="secondary" prepend-icon="mdi-tray-arrow-up" class="ma-1" @click="exportCSV"> Export </v-btn>
-          </v-col>
         </v-row>
       </v-container>
     </v-card>
 
     <v-card-title class="d-flex align-center me-2">
-      <v-icon icon="mdi-camera" color="secondary"></v-icon> &nbsp; Gestión de camaras
+      <v-icon icon="mdi-camera" color="secondary"></v-icon> &nbsp; Gestión de cámaras
 
       <v-spacer></v-spacer>
       <v-text-field
@@ -47,20 +44,21 @@
     <Form @submit="handleSubmit" class="mt-7 loginForm" v-slot="{ errors, isSubmitting }">
       <v-card prepend-icon="mdi-account" title="Perfil de camara">
         <v-card-text>
-          <v-text-field
+          <TextFieldUppercase
             density="compact"
             label="Nombre*"
             variant="outlined"
             color="secondary"
             required
             v-model.trim="camera.name"
-          ></v-text-field>
+          ></TextFieldUppercase>
           <v-text-field
             density="compact"
             v-model.trim="camera.location"
             label="Ubicación*"
             variant="outlined"
             color="secondary"
+            :rules="[rules.required, rules.validateLocation]"
             required
           ></v-text-field>
           <v-combobox
@@ -82,6 +80,7 @@
             label="Url*"
             variant="outlined"
             color="secondary"
+            :rules="[rules.required, rules.validateUrl]"
             required
           ></v-text-field>
           <small class="text-caption text-medium-emphasis">* obligatorio</small>
@@ -106,11 +105,11 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { exportToExcel } from '@/core/utils/excelExporter';
 import { CameraService } from '@/camera-management/services/camera-service';
 import { UnitService } from '@/unit-management/services/unit-service';
 import { validate } from '@/core/validators/validators';
 import { Form } from 'vee-validate';
+import TextFieldUppercase from '@/components/shared/TextFieldUppercase.vue';
 
 const search = ref('');
 const cameraService = new CameraService();
@@ -134,6 +133,25 @@ const snackbarColor = ref('');
 const snackbarTitle = ref('');
 const cameraResource = ref<CreateCameraModel | null>(null);
 
+const rules = {
+  required: (value: string) => !!value || 'Este campo es requerido.',
+  dniLength: (value: number) => (value && value.toString().length === 8) || 'El DNI debe tener exactamente 8 dígitos.',
+  validateUrl: (value: string) => {
+    const urlPattern = /^(https?:\/\/[^\s$.?#].[^\s]*)$/;
+    // Expresión regular para validar IP (IPv4)
+    const ipPattern =
+      /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){2}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+    if (value === '0') return true; // Permitir "0"
+    if (urlPattern.test(value) || ipPattern.test(value)) return true; // Permitir URL o IP
+    return 'Debe ingresar una URL válida, una dirección IP o "0" en caso contrario".'; // Mensaje de error si es inválido
+  },
+  validateLocation: (value: string) => {
+    const urlPattern = /^(https?:\/\/[^\s$.?#].[^\s]*)$/;
+    if (value === '0') return true;
+    return urlPattern.test(value) || 'Ingresar una URL válida o "0" en caso de no haber una url ';
+  }
+};
+
 const closeDialog = () => {
   cameraDialog.value = false;
 };
@@ -151,10 +169,6 @@ onMounted(() => {
   getAllCameras();
   getAllUnits();
 });
-
-const exportCSV = () => {
-  exportToExcel(cameras.value);
-};
 
 async function getAllUnits() {
   const response = await unitService.getAll();
@@ -205,15 +219,12 @@ const confirmDeleteCamera = ({ item }: { item: any }) => {
   camera.value = { ...newCamera };
 };
 
-
 const headers = [
-  { key: 'name', title: 'Nombre' },
-  { key: 'location', title: 'Lugar' },
-  { key: 'unitId', title: 'unidad' },
-  { key: 'url', title: 'url' },
-  { key: 'createdAt', title: 'createdAt' },
-  { key: 'updatedAt', title: 'updatedAt' },
-  { key: 'actions', title: 'Acciones', sortable: false }
+  { key: 'name', title: 'NOMBRE' },
+  { key: 'location', title: 'LUGAR' },
+  { key: 'unitId', title: 'BUS' },
+  { key: 'url', title: 'URL' },
+  { key: 'actions', title: 'ACCIONES', sortable: false }
 ];
 </script>
 

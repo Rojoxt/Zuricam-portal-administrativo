@@ -8,9 +8,7 @@
           </v-col>
           <v-col cols="auto"></v-col>
           <v-spacer></v-spacer>
-          <v-col cols="auto">
-            <v-btn type="success" text="Export" color="secondary" prepend-icon="mdi-tray-arrow-up" class="ma-1" @click="exportCSV"></v-btn>
-          </v-col>
+
         </v-row>
       </v-container>
     </v-card>
@@ -65,30 +63,33 @@
     <Form @submit="validate" class="mt-7 loginForm" v-slot="{ errors, isSubmitting }">
       <v-card prepend-icon="mdi-account" title="Perfil de usuario">
         <v-card-text>
-          <v-text-field
+          <TextFieldUppercase
             density="compact"
             label="Usuario*"
             variant="outlined"
             color="secondary"
             required
             v-model.trim="user.username"
-          ></v-text-field>
-          <v-text-field
+            :rules="[rules.required, rules.validString]"
+          ></TextFieldUppercase>
+          <TextFieldUppercase
             density="compact"
             label="Nombres*"
             variant="outlined"
             color="secondary"
             required
-            v-model.trim="user.firstName"
-          ></v-text-field>
-          <v-text-field
+            v-model="user.firstName"
+            :rules="[rules.required, rules.validString]"
+          ></TextFieldUppercase>
+          <TextFieldUppercase
             density="compact"
             label="Apellidos*"
             variant="outlined"
             color="secondary"
             required
             v-model.trim="user.lastName"
-          ></v-text-field>
+            :rules="[rules.required, rules.validString]"
+          ></TextFieldUppercase>
           <v-text-field
             density="compact"
             type="number"
@@ -99,7 +100,7 @@
             v-model.trim="user.dni"
             :rules="[rules.required, rules.dniLength]"
           ></v-text-field>
-          <v-text-field
+          <TextFieldUppercase
             density="compact"
             placeholder="correo@gmail.com"
             type="email"
@@ -109,7 +110,7 @@
             required
             v-model.trim="user.email"
             :rules="[rules.required, rules.validEmail]"
-          ></v-text-field>
+          ></TextFieldUppercase>
 
           <v-combobox
             density="compact"
@@ -158,14 +159,14 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import { UserService } from '@/user-management/services/user-service';
-import { exportToExcel } from '@/core/utils/excelExporter';
 import { Form } from 'vee-validate';
+import TextFieldUppercase from '@/components/shared/TextFieldUppercase.vue';
 
 const search = ref('');
 const userService = new UserService();
 const userDialog = ref(false);
 const newUser: CreateUserModel = {
-  dni: 0,
+  dni: '',
   permissions: [],
   email: '',
   firstName: '',
@@ -185,10 +186,14 @@ const toggleActive = computed({
 });
 const rules = {
   required: (value: string) => !!value || 'Este campo es requerido.',
-  dniLength: (value: number) => (value && value.toString().length === 8) || 'El DNI debe tener exactamente 8 dígitos.',
+  dniLength: (value: string) => (value && value.length === 8) || 'El DNI debe tener exactamente 8 dígitos.',
   validEmail: (value: string) => {
     const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return pattern.test(value) || 'Ingrese un correo válido.';
+  },
+  validString: (value: string) => {
+    const pattern = /^[a-zA-Z\s ]+$/; // Solo letras de la 'a' a la 'z' (mayúsculas y minúsculas)
+    return pattern.test(value) || 'Ingrese solo letras (a-z, A-Z).';
   }
 };
 
@@ -203,10 +208,6 @@ const snackbarTitle = ref('');
 onMounted(() => {
   getAllUser();
 });
-
-const exportCSV = () => {
-  exportToExcel(users.value);
-};
 
 async function getAllUser() {
   const response = await userService.getAll();
@@ -266,14 +267,14 @@ const confirmDeleteUnit = ({ item }: { item: any }) => {
   user.value = { ...newUser };
 };
 const headers = [
-  { key: 'username', title: 'Usuario' },
-  { key: 'firstName', title: 'Nombre' },
-  { key: 'lastName', title: 'Apellido' },
-  { key: 'email', title: 'Correo' },
-  { key: 'dni', title: 'dni' },
-  { key: 'permissions', title: 'Permisos' },
-  { key: 'isActive', title: 'Estado' },
-  { key: 'actions', title: 'Acciones', sortable: false }
+  { key: 'username', title: 'USUARIO' },
+  { key: 'firstName', title: 'NOMBRES' },
+  { key: 'lastName', title: 'APELLIDOS' },
+  { key: 'email', title: 'CORREO' },
+  { key: 'dni', title: 'DNI' },
+  { key: 'permissions', title: 'PERMISO' },
+  { key: 'isActive', title: 'ESTADO' },
+  { key: 'actions', title: 'ACCIONES', sortable: false }
 ];
 const optionPermissions = [
   { index: 0, name: 'Jefe', color: '#039BE5' },

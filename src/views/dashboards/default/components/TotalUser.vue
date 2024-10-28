@@ -3,7 +3,6 @@ import { ref, computed, onMounted } from 'vue';
 import { CircleArrowDownLeftIcon } from 'vue-tabler-icons';
 import { UserService } from '@/user-management/services/user-service';
 import iconCard from '@/assets/images/icons/icon-card.svg';
-import { exportToExcel } from '@/core/utils/excelExporter';
 
 const tab = ref('1');
 const userService = new UserService();

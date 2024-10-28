@@ -3,8 +3,7 @@ import { ref } from 'vue';
 import { SettingsIcon, LogoutIcon, UserIcon } from 'vue-tabler-icons';
 import { useAuthStore } from '@/security-management/stores/auth-store';
 
-const swt1 = ref(true);
-const swt2 = ref(false);
+
 const authStore = useAuthStore();
 </script>
 

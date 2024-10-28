@@ -95,7 +95,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { DriverService } from '@/unit-management/services/driver-service';
-import { exportToExcel } from '@/core/utils/excelExporter';
 import { validate } from '@/core/validators/validators';
 import { Form } from 'vee-validate';
 

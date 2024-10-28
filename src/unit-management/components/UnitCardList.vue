@@ -8,9 +8,6 @@
           </v-col>
           <v-col cols="auto"></v-col>
           <v-spacer></v-spacer>
-          <v-col cols="auto">
-            <v-btn type="success" color="secondary" prepend-icon="mdi-tray-arrow-up" class="ma-1" @click="exportCSV"> Export </v-btn>
-          </v-col>
         </v-row>
       </v-container>
     </v-card>
@@ -47,21 +44,21 @@
     <Form @submit="validate" class="mt-7 loginForm" v-slot="{ errors, isSubmitting }">
       <v-card prepend-icon="mdi-account" title="Perfil de bus">
         <v-card-text>
-          <v-text-field
+          <TextFieldUppercase
             density="compact"
             label="Placa*"
             variant="outlined"
             color="secondary"
             required
             v-model.trim="unit.carPlate"
-          ></v-text-field>
+          ></TextFieldUppercase>
           <v-combobox
             density="compact"
             variant="outlined"
             color="secondary"
             v-model="unit.driverId"
-            :items="drivers"
-            item-title="name"
+            :items="formattedDrivers"
+            item-title="fullName"
             item-value="id"
             label="Driver"
             :return-object="false"
@@ -90,11 +87,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { UnitService } from '@/unit-management/services/unit-service';
-import { exportToExcel } from '@/core/utils/excelExporter';
 import { DriverService } from '@/unit-management/services/driver-service';
 import { Form } from 'vee-validate';
+import TextFieldUppercase from '@/components/shared/TextFieldUppercase.vue';
 
 const search = ref('');
 const unitService = new UnitService();
@@ -115,11 +112,12 @@ onMounted(() => {
   getAllUnits();
   getAllDriver();
 });
-
-const exportCSV = () => {
-  exportToExcel(units.value);
-};
-
+const formattedDrivers = computed(() => {
+  return drivers.value.map((driver) => ({
+    ...driver,
+    fullName: `${driver.name} ${driver.lastName}` // Combina el nombre y apellido
+  }));
+});
 function validate(values: any, { setErrors }: any) {
   unitResource.value = {
     carPlate: unit.value.carPlate,
@@ -215,11 +213,9 @@ const confirmDeleteUnit = ({ item }: { item: any }) => {
 };
 
 const headers = [
-  { key: 'carPlate', title: 'Placa' },
-  { key: 'driverId', title: 'Conductor Asignado' },
-  { key: 'createdAt', title: 'createdAt' },
-  { key: 'updatedAt', title: 'updatedAt' },
-  { key: 'actions', title: 'Acciones', sortable: false }
+  { key: 'carPlate', title: 'PLACA' },
+  { key: 'driverId', title: 'CONDUCTOR ASIGADO' },
+  { key: 'actions', title: 'ACCIONES', sortable: false }
 ];
 </script>
 

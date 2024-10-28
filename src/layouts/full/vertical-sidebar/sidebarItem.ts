@@ -26,7 +26,7 @@ const sidebarItem: menu[] = [
   { divider: true },
   { header: 'Gestión' },
   {
-    title: 'Gestión de administradores',
+    title: 'Gestión de usuarios',
     icon: UserPlusIcon,
     to: { name: 'UserManagement' }
   },
@@ -36,17 +36,17 @@ const sidebarItem: menu[] = [
     to: { name: 'DriverManagement' }
   },
   {
-    title: 'Gestión de camaras',
+    title: 'Gestión de cámaras',
     icon: CameraPlusIcon,
     to: { name: 'CameraManagement' }
   },
   {
-    title: 'Gestión de Unidades',
+    title: 'Gestión de unidades',
     icon: CarIcon,
     to: { name: 'UnitManagement' }
   },
   {
-    title: 'Gestión de Reporte',
+    title: 'Gestión de reportes',
     icon: FileReportIcon,
     to: { name: 'ReportManagement' }
   },

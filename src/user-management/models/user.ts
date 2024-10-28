@@ -2,7 +2,7 @@ interface CreateUserModel {
   username: string;
   firstName: string;
   lastName: string;
-  dni: number;
+  dni: string;
   email: string;
   headquarter: string;
   permissions: number[];
