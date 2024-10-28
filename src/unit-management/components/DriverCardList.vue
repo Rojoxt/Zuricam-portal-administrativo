@@ -85,19 +85,6 @@
     </Form>
   </v-dialog>
 
-  <v-dialog v-model="deleteDriverDialog" max-width="400">
-    <v-card prepend-icon="mdi-delete" title="Confirmacion">
-      Estas seguro de eliminar: {{ driver.name }}
-      <v-divider></v-divider>
-      <template v-slot:actions>
-        <v-spacer></v-spacer>
-        <v-card-actions>
-          <v-btn text="Cancelar" variant="plain" @click="deleteDriverDialog = false"></v-btn>
-          <v-btn color="secondary" text="Confirmar" variant="tonal" @click="deleteDriver"></v-btn>
-        </v-card-actions>
-      </template>
-    </v-card>
-  </v-dialog>
 
   <v-snackbar v-model="snackbar" :color="snackbarColor" variant="tonal" top>
     <strong>{{ snackbarTitle }}</strong>
@@ -115,7 +102,6 @@ import { Form } from 'vee-validate';
 const search = ref('');
 const driverService = new DriverService();
 const driverDialog = ref(false);
-const deleteDriverDialog = ref(false);
 const newDriver: CreateDriverModel = {
   name: '',
   lastName: '',
@@ -178,11 +164,6 @@ function addToast(title: string, message: string, color: string): void {
 
 const confirmDeleteProduct = ({ item }: { item: any }) => {
   driver.value = { ...item };
-  deleteDriverDialog.value = true;
-};
-
-const deleteDriver = () => {
-  // aseguro de que id existirá en tiempo de ejecución
   const id = (driver.value as any).id;
 
   //drivers.value = drivers.value.filter((val) => val.id !== id);
@@ -191,7 +172,6 @@ const deleteDriver = () => {
     getAllDrivers();
   });
   driver.value = { ...newDriver };
-  deleteDriverDialog.value = false;
 };
 
 const headers = [

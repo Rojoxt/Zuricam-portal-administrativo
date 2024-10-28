@@ -149,21 +149,6 @@
       </v-card>
     </Form>
   </v-dialog>
-
-  <v-dialog v-model="deleteUserDialog" max-width="400">
-    <v-card prepend-icon="mdi-delete" title="Confirmacion">
-      Estas seguro de Eliminar al usuario : {{ user.username }}
-      <v-divider></v-divider>
-      <template v-slot:actions>
-        <v-spacer></v-spacer>
-        <v-card-actions>
-          <v-btn text="Cancelar" variant="plain" @click="deleteUserDialog = false"></v-btn>
-          <v-btn color="secondary" text="Confirmar" variant="tonal" @click="deleteDriver"></v-btn>
-        </v-card-actions>
-      </template>
-    </v-card>
-  </v-dialog>
-
   <v-snackbar v-model="snackbar" :color="snackbarColor" variant="tonal" top>
     <strong>{{ snackbarTitle }}</strong>
     <p>{{ snackbarMessage }}</p>
@@ -179,7 +164,6 @@ import { Form } from 'vee-validate';
 const search = ref('');
 const userService = new UserService();
 const userDialog = ref(false);
-const deleteUserDialog = ref(false);
 const newUser: CreateUserModel = {
   dni: 0,
   permissions: [],
@@ -272,11 +256,6 @@ function addToast(title: string, message: string, color: string): void {
 
 const confirmDeleteUnit = ({ item }: { item: any }) => {
   user.value = { ...item, permissions: [...item.permissions] };
-  deleteUserDialog.value = true;
-};
-
-const deleteDriver = () => {
-  // aseguro de que id existirá en tiempo de ejecución
   const id = (user.value as any).id;
 
   //drivers.value = drivers.value.filter((val) => val.id !== id);
@@ -285,9 +264,7 @@ const deleteDriver = () => {
     getAllUser();
   });
   user.value = { ...newUser };
-  deleteUserDialog.value = false;
 };
-
 const headers = [
   { key: 'username', title: 'Usuario' },
   { key: 'firstName', title: 'Nombre' },

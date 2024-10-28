@@ -98,21 +98,6 @@
       </v-card>
     </Form>
   </v-dialog>
-
-  <v-dialog v-model="deleteCameraDialog" max-width="400">
-    <v-card prepend-icon="mdi-delete" title="Confirmacion">
-      "Are you sure you want to delete {{ camera.name }}"
-      <v-divider></v-divider>
-      <template v-slot:actions>
-        <v-spacer></v-spacer>
-        <v-card-actions>
-          <v-btn text="Cancelar" variant="plain" @click="deleteCameraDialog = false"></v-btn>
-          <v-btn color="secondary" text="Confirmar" variant="tonal" @click="deleteCamera"></v-btn>
-        </v-card-actions>
-      </template>
-    </v-card>
-  </v-dialog>
-
   <v-snackbar v-model="snackbar" :color="snackbarColor" variant="tonal" top>
     <strong>{{ snackbarTitle }}</strong>
     <p>{{ snackbarMessage }}</p>
@@ -131,7 +116,6 @@ const search = ref('');
 const cameraService = new CameraService();
 const unitService = new UnitService();
 const cameraDialog = ref(false);
-const deleteCameraDialog = ref(false);
 const newCamera: CreateCameraModel = {
   name: '',
   location: '',
@@ -211,11 +195,6 @@ function addToast(title: string, message: string, color: string): void {
 
 const confirmDeleteCamera = ({ item }: { item: any }) => {
   camera.value = { ...item };
-  deleteCameraDialog.value = true;
-};
-
-const deleteCamera = () => {
-  // aseguro de que id existirá en tiempo de ejecución
   const id = (camera.value as any).id;
 
   //drivers.value = drivers.value.filter((val) => val.id !== id);
@@ -224,8 +203,8 @@ const deleteCamera = () => {
     getAllCameras();
   });
   camera.value = { ...newCamera };
-  deleteCameraDialog.value = false;
 };
+
 
 const headers = [
   { key: 'name', title: 'Nombre' },

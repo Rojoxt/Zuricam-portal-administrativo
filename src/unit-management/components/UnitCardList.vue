@@ -83,20 +83,6 @@
     </Form>
   </v-dialog>
 
-  <v-dialog v-model="deleteUnitDialog" max-width="400">
-    <v-card prepend-icon="mdi-delete" title="Confirmacion">
-      Estas seguro de eliminar: {{ unit.carPlate }}
-      <v-divider></v-divider>
-      <template v-slot:actions>
-        <v-spacer></v-spacer>
-        <v-card-actions>
-          <v-btn text="Cancelar" variant="plain" @click="deleteUnitDialog = false"></v-btn>
-          <v-btn color="secondary" text="Confirmar" variant="tonal" @click="deleteDriver"></v-btn>
-        </v-card-actions>
-      </template>
-    </v-card>
-  </v-dialog>
-
   <v-snackbar v-model="snackbar" :color="snackbarColor" variant="tonal" top>
     <strong>{{ snackbarTitle }} </strong>
     <p>{{ snackbarMessage }}</p>
@@ -114,7 +100,6 @@ const search = ref('');
 const unitService = new UnitService();
 const driverService = new DriverService();
 const unitDialog = ref(false);
-const deleteUnitDialog = ref(false);
 const unit = ref<Partial<UnitModel>>({});
 const units = ref<UnitModel[]>([]);
 const drivers = ref<DriverModel[]>([]);
@@ -218,10 +203,6 @@ function addToast(title: string, message: string, color: string): void {
 
 const confirmDeleteUnit = ({ item }: { item: any }) => {
   unit.value = { ...item };
-  deleteUnitDialog.value = true;
-};
-
-const deleteDriver = () => {
   // aseguro de que id existirá en tiempo de ejecución
   const id = (unit.value as any).id;
 
@@ -231,7 +212,6 @@ const deleteDriver = () => {
     getAllUnits();
   });
   unit.value = { carPlate: '', driverId: 0 };
-  deleteUnitDialog.value = false;
 };
 
 const headers = [
