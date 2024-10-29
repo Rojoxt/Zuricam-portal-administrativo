@@ -91,13 +91,14 @@
           ></TextFieldUppercase>
           <v-text-field
             density="compact"
-            type="number"
+            type="text"
             label="Dni*"
             variant="outlined"
             color="secondary"
             required
             v-model.trim="user.dni"
-            :rules="[rules.required, rules.dniLength]"
+            :rules="[rules.required, rules.validDni]"
+            @input="user.dni = user.dni.replace(/[^0-9]/g, '')"
           ></v-text-field>
           <TextFieldUppercase
             density="compact"
@@ -184,7 +185,12 @@ const isFormValid = computed(() => {
     user.value.dni &&
     user.value.email &&
     user.value.permissions[0] !== null &&
-    rules.dniLength(user.value.dni) === true &&
+    rules.required(user.value.username) === true &&
+    rules.required(user.value.firstName) === true &&
+    rules.required(user.value.lastName) === true &&
+    rules.required(user.value.email) === true &&
+    rules.required(user.value.dni) === true &&
+    rules.validDni(user.value.dni) === true &&
     rules.validString(user.value.username) === true &&
     rules.validString(user.value.firstName) === true &&
     rules.validString(user.value.lastName) === true &&
@@ -199,7 +205,10 @@ const toggleActive = computed({
 });
 const rules = {
   required: (value: string) => !!value || 'Este campo es requerido.',
-  dniLength: (value: string) => (value && value.length === 8) || 'El DNI debe tener exactamente 8 dígitos.',
+  validDni: (value: string) => {
+    const pattern = /^[1-9][0-9]{7}$/;
+    return pattern.test(value) || 'El DNI es número y tiene 8 digitos.';
+  },
   validEmail: (value: string) => {
     const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return pattern.test(value) || 'Ingrese un correo válido.';

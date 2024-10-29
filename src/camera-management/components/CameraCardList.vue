@@ -52,21 +52,8 @@
             v-model.trim="camera.name"
             required
           ></TextFieldUppercase>
-          <v-checkbox
-            v-model="realTimeLocation"
-            label="Ubicación en tiempo real"
-            color="secondary"
-          ></v-checkbox>
-          <v-text-field
-            v-if="realTimeLocation"
-            density="compact"
-            v-model.trim="camera.location"
-            label="Ubicación*"
-            variant="outlined"
-            color="secondary"
-            :rules="[rules.required, rules.validateLocation]"
-            required
-          ></v-text-field>
+
+
           <v-select
             density="compact"
             variant="outlined"
@@ -87,6 +74,21 @@
             variant="outlined"
             color="secondary"
             :rules="[rules.required, rules.validateUrl]"
+            required
+          ></v-text-field>
+          <v-checkbox
+            v-model="realTimeLocation"
+            label="Ubicación en tiempo real"
+            color="secondary"
+          ></v-checkbox>
+          <v-text-field
+            v-if="realTimeLocation"
+            density="compact"
+            v-model.trim="camera.location"
+            label="Ubicación*"
+            variant="outlined"
+            color="secondary"
+            :rules="[rules.required, rules.validateLocation]"
             required
           ></v-text-field>
           <small class="text-caption text-medium-emphasis">* obligatorio</small>
@@ -138,7 +140,7 @@ const isFormValid = computed(() => {
     camera.value.url &&
     camera.value.unitId &&
     rules.validateUrl(camera.value.url) === true &&
-    rules.validateLocation(camera.value.location)
+    rules.validateLocation(camera.value.location)===true
   );
 });
 

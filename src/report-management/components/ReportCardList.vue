@@ -6,7 +6,7 @@
           <v-col cols="auto"></v-col>
           <v-spacer></v-spacer>
           <v-col cols="auto">
-            <v-btn type="success" color="secondary" prepend-icon="mdi-tray-arrow-up" class="ma-1" @click="exportToExcel">Exportar </v-btn>
+            <v-btn type="success" color="secondary" prepend-icon="mdi-tray-arrow-up" class="ma-1" @click="exportToExcel">EXPORTAR REPORTE</v-btn>
           </v-col>
         </v-row>
       </v-container>
