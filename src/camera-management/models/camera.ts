@@ -1,7 +1,8 @@
 interface CreateCameraModel {
-  name?: string;
-  location?: string;
-  unitId?: number;
+  name: string;
+  location: string;
+  url: string;
+  unitId: number;
 }
 
 interface CameraModel extends CreateCameraModel {

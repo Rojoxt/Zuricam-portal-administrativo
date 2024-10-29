@@ -8,7 +8,7 @@ import { AxiosError } from 'axios';
 
 const email = ref('');
 const apiError = ref<string | null>(null);
-let dialog = ref(false);
+const dialog = ref(false);
 
 const authService = new AuthService();
 const emailRules = ref([(v: string) => !!v || 'E-mail is required', (v: string) => /.+@.+\..+/.test(v) || 'E-mail must be valid']);
@@ -25,14 +25,21 @@ async function validate() {
     if (!(error instanceof AxiosError)) {
       return;
     }
+    console.error('Error response data:', error.response?.data);
+
     switch (error.response?.data?.detail) {
-      case 'Email not existed':
-        apiError.value = 'Correo no existe';// Almacena el mensaje de error
+      case 'Email not registered':
+        apiError.value = 'Correo no existe';
+        break;
+      case 'Password or email incorrect':
+        apiError.value = 'Correo o contraseña incorrecta';
+        break;
+      case 'The account is deactivated':
+        apiError.value = 'La cuenta esta descativada';
         break;
     }
   }
 }
-
 </script>
 
 <template>
@@ -63,23 +70,10 @@ async function validate() {
     <div v-if="apiError" class="mt-2">
       <v-alert color="error">{{ apiError }}</v-alert>
     </div>
-    <v-dialog
-      v-model="dialog"
-      width="auto"
-    >
-      <v-card
-        max-width="400"
-        prepend-icon="mdi-update"
-        text="Revisa tu bandeja de entrada"
-        title="Exitoso"
-      >
+    <v-dialog v-model="dialog" width="auto">
+      <v-card max-width="400" prepend-icon="mdi-update" text="Revisa tu bandeja de entrada" title="Exitoso">
         <template v-slot:actions>
-          <v-btn
-            class="ms-auto"
-            text="Aceptar"
-            @click="dialog = false"
-            :to="{name:'Login'}"
-          ></v-btn>
+          <v-btn class="ms-auto" text="Aceptar" @click="dialog = false" :to="{ name: 'Login' }"></v-btn>
         </template>
       </v-card>
     </v-dialog>

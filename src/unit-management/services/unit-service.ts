@@ -24,6 +24,4 @@ export class UnitService {
   findByName(name: string) {
     return http.get(`/unit?name=${name}`);
   }
-
-
 }

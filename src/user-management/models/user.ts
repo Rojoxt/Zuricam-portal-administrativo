@@ -2,10 +2,11 @@ interface CreateUserModel {
   username: string;
   firstName: string;
   lastName: string;
-  dni: number;
+  dni: string;
   email: string;
   headquarter: string;
-  permissions:number[] ;
+  permissions: number[];
+  isActive: boolean;
 }
 
 interface UserModel extends CreateUserModel {

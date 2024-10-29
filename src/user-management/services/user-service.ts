@@ -24,6 +24,7 @@ export class UserService {
   findByName(name: string) {
     return http.get(`/user?name=${name}`);
   }
-
-
+  resetPassword(id: number) {
+    return http.patch(`/user?id=${id}`);
+  }
 }
