@@ -46,13 +46,14 @@
         <v-card-text>
           <TextFieldUppercase
             density="compact"
-            label="Placa*"
+            label="Nombre*"
             variant="outlined"
             color="secondary"
             required
+            :rules="[rules.required]"
             v-model.trim="unit.carPlate"
           ></TextFieldUppercase>
-          <v-combobox
+          <v-select
             density="compact"
             variant="outlined"
             color="secondary"
@@ -60,11 +61,11 @@
             :items="formattedDrivers"
             item-title="fullName"
             item-value="id"
-            label="Driver"
+            label="Conductor*"
             :return-object="false"
             required
           >
-          </v-combobox>
+          </v-select>
           <small class="text-caption text-medium-emphasis">* obligatorio</small>
         </v-card-text>
         <v-divider></v-divider>
@@ -74,7 +75,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn text="Cerrar" variant="plain" @click="unitDialog = false"></v-btn>
-          <v-btn color="primary" :loading="isSubmitting" class="mt-2" variant="tonal" :disabled="valid" type="submit"> Guardar </v-btn>
+          <v-btn color="primary" :loading="isSubmitting" class="mt-2" variant="tonal" :disabled="!isFormValid" type="submit"> Guardar </v-btn>
         </v-card-actions>
       </v-card>
     </Form>
@@ -100,7 +101,12 @@ const unitDialog = ref(false);
 const unit = ref<Partial<UnitModel>>({});
 const units = ref<UnitModel[]>([]);
 const drivers = ref<DriverModel[]>([]);
-const valid = ref(false);
+const isFormValid = computed(() => {
+  return (
+    unit.value.carPlate &&
+    unit.value.driverId
+  );
+});
 const unitResource = ref<CreateUnitModel | null>(null);
 //configuration snackbars
 const snackbar = ref(false);
@@ -112,6 +118,9 @@ onMounted(() => {
   getAllUnits();
   getAllDriver();
 });
+const rules = {
+  required: (value: string) => !!value || 'Este campo es requerido.',
+}
 const formattedDrivers = computed(() => {
   return drivers.value.map((driver) => ({
     ...driver,
@@ -213,7 +222,7 @@ const confirmDeleteUnit = ({ item }: { item: any }) => {
 };
 
 const headers = [
-  { key: 'carPlate', title: 'PLACA' },
+  { key: 'carPlate', title: 'NOMBRE' },
   { key: 'driverId', title: 'CONDUCTOR ASIGADO' },
   { key: 'actions', title: 'ACCIONES', sortable: false }
 ];

@@ -86,7 +86,7 @@
             variant="outlined"
             color="secondary"
             required
-            v-model.trim="user.lastName"
+            v-model="user.lastName"
             :rules="[rules.required, rules.validString]"
           ></TextFieldUppercase>
           <v-text-field
@@ -111,7 +111,7 @@
             :rules="[rules.required, rules.validEmail]"
           ></TextFieldUppercase>
 
-          <v-combobox
+          <v-select
             density="compact"
             variant="outlined"
             color="secondary"
@@ -122,7 +122,7 @@
             label="Permiso"
             :return-object="false"
           >
-          </v-combobox>
+          </v-select>
 
           <v-row justify="center">
             <!-- Centra los botones -->
@@ -144,7 +144,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn text="Cerrar" variant="plain" @click="userDialog = false"></v-btn>
-          <v-btn color="primary" :loading="isSubmitting" class="mt-2" variant="tonal" :disabled="valid" type="submit"> Guardar </v-btn>
+          <v-btn color="primary" :loading="isSubmitting" class="mt-2" variant="tonal" :disabled="!isFormValid" type="submit"> Guardar </v-btn>
         </v-card-actions>
       </v-card>
     </Form>
@@ -166,7 +166,7 @@ const userService = new UserService();
 const userDialog = ref(false);
 const newUser: CreateUserModel = {
   dni: '',
-  permissions: [],
+  permissions: [0],
   email: '',
   firstName: '',
   headquarter: '',
@@ -176,7 +176,21 @@ const newUser: CreateUserModel = {
 };
 const userResource = ref<CreateUserModel | null>(null);
 const user = ref<CreateUserModel & { id?: number }>(newUser);
-const valid = ref(false);
+const isFormValid = computed(() => {
+  return (
+    user.value.username &&
+    user.value.firstName &&
+    user.value.lastName &&
+    user.value.dni &&
+    user.value.email &&
+    user.value.permissions[0] !== null &&
+    rules.dniLength(user.value.dni) === true &&
+    rules.validString(user.value.username) === true &&
+    rules.validString(user.value.firstName) === true &&
+    rules.validString(user.value.lastName) === true &&
+    rules.validEmail(user.value.email)
+  );
+});
 const toggleActive = computed({
   get: () => (user.value.isActive ? 'true' : 'false'), // Devuelve como string
   set: (value) => {

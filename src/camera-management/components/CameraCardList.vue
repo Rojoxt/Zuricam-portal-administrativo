@@ -49,10 +49,16 @@
             label="Nombre*"
             variant="outlined"
             color="secondary"
-            required
             v-model.trim="camera.name"
+            required
           ></TextFieldUppercase>
+          <v-checkbox
+            v-model="realTimeLocation"
+            label="Ubicación en tiempo real"
+            color="secondary"
+          ></v-checkbox>
           <v-text-field
+            v-if="realTimeLocation"
             density="compact"
             v-model.trim="camera.location"
             label="Ubicación*"
@@ -61,7 +67,7 @@
             :rules="[rules.required, rules.validateLocation]"
             required
           ></v-text-field>
-          <v-combobox
+          <v-select
             density="compact"
             variant="outlined"
             color="secondary"
@@ -73,7 +79,7 @@
             :return-object="false"
             required
           >
-          </v-combobox>
+          </v-select>
           <v-text-field
             density="compact"
             v-model.trim="camera.url"
@@ -92,7 +98,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn text="Cerrar" variant="plain" @click="cameraDialog = false"></v-btn>
-          <v-btn color="primary" :loading="isSubmitting" class="mt-2" variant="tonal" :disabled="valid" type="submit"> Guardar </v-btn>
+          <v-btn color="primary" :loading="isSubmitting" class="mt-2" variant="tonal" :disabled="!isFormValid" type="submit"> Guardar </v-btn>
         </v-card-actions>
       </v-card>
     </Form>
@@ -104,34 +110,48 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from "vue";
 import { CameraService } from '@/camera-management/services/camera-service';
 import { UnitService } from '@/unit-management/services/unit-service';
 import { validate } from '@/core/validators/validators';
 import { Form } from 'vee-validate';
 import TextFieldUppercase from '@/components/shared/TextFieldUppercase.vue';
 
+const realTimeLocation = ref(false);
 const search = ref('');
 const cameraService = new CameraService();
 const unitService = new UnitService();
 const cameraDialog = ref(false);
 const newCamera: CreateCameraModel = {
   name: '',
-  location: '',
+  location: 'No tiene ubicación en tiempo real',
   url: '',
   unitId: 1
 };
 const camera = ref<CreateCameraModel & { id?: number }>(newCamera);
 const cameras = ref<CameraModel[]>([]);
 const units = ref<UnitModel[]>([]);
-const valid = ref(false);
-//const cameraResource = ref<CreateCameraModel | null>(null);
-//configuration snackbars
+const isFormValid = computed(() => {
+  return (
+    camera.value.name &&
+    camera.value.location &&
+    camera.value.url &&
+    camera.value.unitId &&
+    rules.validateUrl(camera.value.url) === true &&
+    rules.validateLocation(camera.value.location)
+  );
+});
+
 const snackbar = ref(false);
 const snackbarMessage = ref('');
 const snackbarColor = ref('');
 const snackbarTitle = ref('');
 const cameraResource = ref<CreateCameraModel | null>(null);
+watch(realTimeLocation, (newValue) => {
+  if (!newValue) {
+    camera.value.location = 'No tiene ubicación en tiempo real';
+  }else camera.value.location = '';
+});
 
 const rules = {
   required: (value: string) => !!value || 'Este campo es requerido.',
@@ -147,8 +167,8 @@ const rules = {
   },
   validateLocation: (value: string) => {
     const urlPattern = /^(https?:\/\/[^\s$.?#].[^\s]*)$/;
-    if (value === '0') return true;
-    return urlPattern.test(value) || 'Ingresar una URL válida o "0" en caso de no haber una url ';
+    if (value === 'No tiene ubicación en tiempo real') return true;
+    return urlPattern.test(value) || 'Ingresar una URL válida';
   }
 };
 
@@ -189,7 +209,14 @@ const openNew = () => {
 
 const editCamera = ({ item }: { item: any }) => {
   camera.value = { ...item };
-  cameraDialog.value = true;
+  if (item.location !=='No tiene ubicación en tiempo real') {
+    realTimeLocation.value=true;
+    camera.value.location = item.location;
+    cameraDialog.value = true;}
+  else{
+    realTimeLocation.value=false;
+    cameraDialog.value = true;
+  }
 };
 
 function getCarPlateUnit(unitId: number) {
