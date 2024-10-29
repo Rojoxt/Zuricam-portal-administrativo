@@ -4,6 +4,7 @@ import { ref } from 'vue';
 //import { useAuthStore } from '@/stores/auth';
 import { useAuthStore } from '@/security-management/stores/auth-store';
 import { Form } from 'vee-validate';
+import TextFieldUppercase from "@/components/shared/TextFieldUppercase.vue";
 
 const valid = ref(false);
 const show1 = ref(false);
@@ -40,7 +41,7 @@ function validate(values: any, { setErrors }: any) {
     </v-col>
   </v-row>
   <Form @submit="validate" class="mt-7 loginForm" v-slot="{ errors, isSubmitting }">
-    <v-text-field
+    <TextFieldUppercase
       v-model="username"
       :rules="emailRules"
       label="Correo Electrónico / Usuario"
@@ -50,7 +51,7 @@ function validate(values: any, { setErrors }: any) {
       hide-details="auto"
       variant="outlined"
       color="primary"
-    ></v-text-field>
+    ></TextFieldUppercase>
     <v-text-field
       v-model="password"
       :rules="passwordRules"
