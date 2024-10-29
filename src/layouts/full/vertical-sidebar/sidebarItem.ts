@@ -1,4 +1,4 @@
-import { DashboardIcon, IdIcon, CameraPlusIcon, UserPlusIcon, CarIcon, FileReportIcon } from 'vue-tabler-icons';
+import { DashboardIcon, CameraPlusIcon, UserPlusIcon, CarIcon, FileReportIcon } from 'vue-tabler-icons';
 
 export interface menu {
   header?: string;
@@ -29,11 +29,6 @@ const sidebarItem: menu[] = [
     title: 'Gestión de usuarios',
     icon: UserPlusIcon,
     to: { name: 'UserManagement' }
-  },
-  {
-    title: 'Gestión de conductores',
-    icon: IdIcon,
-    to: { name: 'DriverManagement' }
   },
   {
     title: 'Gestión de cámaras',
