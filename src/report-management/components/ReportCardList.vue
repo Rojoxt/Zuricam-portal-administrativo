@@ -147,7 +147,7 @@ function formatDate(dateString: string) {
   const date = new Date(dateString);
 
   // Opciones para el formato deseado
-  const options = {
+  const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
     month: 'long', // Cambia a 'short' para abreviar el mes
     day: 'numeric',
@@ -168,18 +168,18 @@ const exportToExcel = async () => {
     font: {
       color: { argb: 'FF000000' }, // Color blanco
       bold: true // Negrita
-    },
-    border: {
-      top: { style: 'thin', color: { argb: 'FF000000' } },
-      left: { style: 'thin', color: { argb: 'FF000000' } },
-      bottom: { style: 'thin', color: { argb: 'FF000000' } },
-      right: { style: 'thin', color: { argb: 'FF000000' } }
     }
   };
   // Añade encabezados
   const headerRow = worksheet.addRow(headers.map((header) => header.title));
   headerRow.eachCell((cell) => {
-    cell.style = headerStyle; // Aplica el estilo a cada celda del encabezado
+    cell.style.border = {
+      top: { style: 'thin' },
+      left: { style: 'thin' },
+      bottom: { style: 'thin' },
+      right: { style: 'thin' }
+    };
+    cell.font = headerStyle.font;
   });
 
   // Define el ancho de las columnas
@@ -198,7 +198,7 @@ const exportToExcel = async () => {
       item.incident,
       item.trackingLink,
       '',
-      getCarPlateUnit(item.unitId),
+      getCarPlateUnit(item.unitId ?? 1),
       formatDate(item.createdAt) // Formato de fecha
     ];
 

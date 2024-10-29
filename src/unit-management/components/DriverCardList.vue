@@ -8,9 +8,6 @@
           </v-col>
           <v-col cols="auto"></v-col>
           <v-spacer></v-spacer>
-          <v-col cols="auto">
-            <v-btn type="success" color="secondary" prepend-icon="mdi-tray-arrow-up" class="ma-1" @click="exportCSV"> Export </v-btn>
-          </v-col>
         </v-row>
       </v-container>
     </v-card>
@@ -84,8 +81,6 @@
       </v-card>
     </Form>
   </v-dialog>
-
-
   <v-snackbar v-model="snackbar" :color="snackbarColor" variant="tonal" top>
     <strong>{{ snackbarTitle }}</strong>
     <p>{{ snackbarMessage }}</p>
@@ -131,10 +126,6 @@ const handleSubmit = async (values: any, { setErrors }: any) => {
   await validate(driverService, driver, driverResource, setErrors, addToast, closeDialog, getAllDrivers);
 };
 
-const exportCSV = () => {
-  exportToExcel(drivers.value);
-};
-
 async function getAllDrivers() {
   const response = await driverService.getAll();
   drivers.value = response.data.result;
@@ -142,7 +133,7 @@ async function getAllDrivers() {
 }
 
 const openNew = () => {
-  driver.value = { ...newDriver};
+  driver.value = { ...newDriver };
   driverDialog.value = true;
 };
 

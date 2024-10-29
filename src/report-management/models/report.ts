@@ -11,3 +11,4 @@ interface ReportModel extends CreateReportModel {
   createdAt: string;
   updatedAt: string;
 }
+

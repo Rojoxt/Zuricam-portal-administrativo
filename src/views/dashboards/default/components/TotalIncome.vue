@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
   <v-card elevation="0" class="bg-primary overflow-hidden bubble-shape-sm bubble-primary mb-6">
     <v-card-text class="pa-5">
@@ -37,16 +35,23 @@ import { CameraService } from '@/camera-management/services/camera-service';
 const driverService = new DriverService();
 const cameraService = new CameraService();
 
-const totalDriver = ref(0);
-const totalCamera = ref(0);
+const totalDriver = ref<number>(0);
+const totalCamera = ref<number>(0);
 
 onMounted(() => {
   getAllData();
 });
+
 async function getAllData() {
-  const response = await driverService.getAll();
-  const response2 = await cameraService.getAll();
-  totalDriver.value = response.data.result.length;
-  totalCamera.value = response2.data.result.length;
+  try {
+    const response = await driverService.getAll();
+    const response2 = await cameraService.getAll();
+
+    // Asegúrate de que `data.result` exista en la respuesta
+    totalDriver.value = response?.data?.result?.length ?? 0;
+    totalCamera.value = response2?.data?.result?.length ?? 0;
+  } catch (error) {
+    console.error('Error al obtener datos:', error);
+  }
 }
 </script>

@@ -8,7 +8,6 @@
           </v-col>
           <v-col cols="auto"></v-col>
           <v-spacer></v-spacer>
-
         </v-row>
       </v-container>
     </v-card>
@@ -231,11 +230,11 @@ const resetPassword = async ({ item }: { item: any }) => {
     user.value = { ...item };
 
     // Llamada asíncrona para resetear la contraseña
-    const response = await userService.resetPassword(user.value.id);
+    const response = await userService.resetPassword(user.value.id ?? 1);
 
     // Mostrar mensaje de éxito con el detalle recibido del backend
     addToast('Éxito', `${response.data.detail}`, 'success');
-  } catch (error) {
+  } catch (error: any) {
     // Manejar cualquier error durante el proceso de reseteo de contraseña
     if (error.response && error.response.data && error.response.data.detail) {
       addToast('Error', `${error.response.data.detail}`, 'error');
